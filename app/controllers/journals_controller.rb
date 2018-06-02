@@ -1,0 +1,2 @@
+class JournalsController < MastersController
+end
