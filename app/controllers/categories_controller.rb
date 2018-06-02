@@ -1,0 +1,2 @@
+class CategoriesController < MastersController
+end

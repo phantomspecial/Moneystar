@@ -1,0 +1,2 @@
+class SearchesController < MastersController
+end

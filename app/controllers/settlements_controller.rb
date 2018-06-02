@@ -1,0 +1,2 @@
+class SettlementsController < MastersController
+end
