@@ -1,7 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Category.create(uuid: 1101, cat_name: '当座資産', cf_cat: '現預金', name: '現金')
+Category.create(uuid: 1102, cat_name: '当座資産', cf_cat: '現預金', name: '当座預金')
+Category.create(uuid: 1201, cat_name: '棚卸資産', cf_cat: '営業', name: '繰越商品')
+Category.create(uuid: 1301, cat_name: 'その他流動資産', cf_cat: '営業', name: '前払費用')
+Category.create(uuid: 1401, cat_name: '有形固定資産', cf_cat: '投資', name: '電子機器')
+Category.create(uuid: 1412, cat_name: '有形固定資産', cf_cat: '投資', name: '予算減価償却累計額')
+Category.create(uuid: 1601, cat_name: '投資その他の資産', cf_cat: '投資', name: 'SBI預金')
+Category.create(uuid: 2101, cat_name: '流動負債', cf_cat: '営業', name: '買掛金')
+Category.create(uuid: 2106, cat_name: '流動負債', cf_cat: '営業', name: 'VISAカード')
+Category.create(uuid: 2201, cat_name: '固定負債', cf_cat: '投資', name: '設備未払金')
+Category.create(uuid: 3101, cat_name: '資本金', cf_cat: '財務', name: '資本金')
+Category.create(uuid: 3201, cat_name: '資本剰余金', cf_cat: '財務', name: '資本準備金')
+Category.create(uuid: 3303, cat_name: '利益剰余金', cf_cat: '財務', name: '繰越利益剰余金')
+Category.create(uuid: 4101, cat_name: '売上高', cf_cat: '営業', name: '商品売上')
+Category.create(uuid: 4102, cat_name: '売上高', cf_cat: '営業', name: '給与収入')
+Category.create(uuid: 4201, cat_name: '営業外収益', cf_cat: '営業', name: '受取利息')
+Category.create(uuid: 4301, cat_name: '特別利益', cf_cat: '営業', name: '還付金')
+Category.create(uuid: 5101, cat_name: '売上原価', cf_cat: '営業', name: '仕入')
+Category.create(uuid: 5102, cat_name: '売上原価', cf_cat: '営業', name: '食費')
+Category.create(uuid: 5201, cat_name: '販売費及び一般管理費', cf_cat: '営業', name: '発送費')
+Category.create(uuid: 5209, cat_name: '販売費及び一般管理費', cf_cat: '営業', name: '予算減価償却費')
+Category.create(uuid: 5210, cat_name: '販売費及び一般管理費', cf_cat: '営業', name: '支払家賃')
+Category.create(uuid: 5301, cat_name: '営業外費用', cf_cat: '営業', name: '娯楽費')
+Category.create(uuid: 5405, cat_name: '特別損失', cf_cat: '投資', name: '手術費')
