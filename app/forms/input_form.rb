@@ -6,38 +6,36 @@ class InputForm
                  :kogaki
 
   def journaling
-    enable_kari_arr, enable_kasi_arr = jounal_array_maker(self)
+    ins_kari_ar, ins_kasi_ar = jounal_array_maker
 
     ActiveRecord::Base.transaction do
       journal = Journal.create(kogaki: kogaki)
 
-      enable_kari_arr.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
-      enable_kasi_arr.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
+      ins_kari_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
+      ins_kasi_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
 
-      # 借方・貸方ともに1つの科目の場合
-      enable_kari_arr.map { |r| Ledger.create(journal_id: journal.id, contra_id: enable_kasi_arr.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
-      enable_kasi_arr.map { |r| Ledger.create(journal_id: journal.id, contra_id: enable_kari_arr.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
+      ins_kari_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kasi_ar.length > 1 ? 9999 : ins_kasi_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
+      ins_kasi_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kari_ar.length > 1 ? 9999 : ins_kari_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
     end
   end
 
   private
 
-  def jounal_array_maker(form_data)
+  def jounal_array_maker
     # 要リファクタ
-
     kari_data_arr = []
-    kari_data_arr << [form_data.kari_ka1, 1, form_data.kari_ki1] if [form_data.kari_ka1, form_data.kari_ki1].all? {|i| i.present?}
-    kari_data_arr << [form_data.kari_ka2, 1, form_data.kari_ki2] if [form_data.kari_ka2, form_data.kari_ki2].all? {|i| i.present?}
-    kari_data_arr << [form_data.kari_ka3, 1, form_data.kari_ki3] if [form_data.kari_ka3, form_data.kari_ki3].all? {|i| i.present?}
-    kari_data_arr << [form_data.kari_ka4, 1, form_data.kari_ki4] if [form_data.kari_ka4, form_data.kari_ki4].all? {|i| i.present?}
-    kari_data_arr << [form_data.kari_ka5, 1, form_data.kari_ki5] if [form_data.kari_ka5, form_data.kari_ki5].all? {|i| i.present?}
+    kari_data_arr << [self.kari_ka1, 1, self.kari_ki1] if [self.kari_ka1, self.kari_ki1].all? {|i| i.present?}
+    kari_data_arr << [self.kari_ka2, 1, self.kari_ki2] if [self.kari_ka2, self.kari_ki2].all? {|i| i.present?}
+    kari_data_arr << [self.kari_ka3, 1, self.kari_ki3] if [self.kari_ka3, self.kari_ki3].all? {|i| i.present?}
+    kari_data_arr << [self.kari_ka4, 1, self.kari_ki4] if [self.kari_ka4, self.kari_ki4].all? {|i| i.present?}
+    kari_data_arr << [self.kari_ka5, 1, self.kari_ki5] if [self.kari_ka5, self.kari_ki5].all? {|i| i.present?}
 
     kasi_data_arr = []
-    kasi_data_arr << [form_data.kasi_ka1, 2, form_data.kasi_ki1] if [form_data.kasi_ka1, form_data.kasi_ki1].all? {|i| i.present?}
-    kasi_data_arr << [form_data.kasi_ka2, 2, form_data.kasi_ki2] if [form_data.kasi_ka2, form_data.kasi_ki2].all? {|i| i.present?}
-    kasi_data_arr << [form_data.kasi_ka3, 2, form_data.kasi_ki3] if [form_data.kasi_ka3, form_data.kasi_ki3].all? {|i| i.present?}
-    kasi_data_arr << [form_data.kasi_ka4, 2, form_data.kasi_ki4] if [form_data.kasi_ka4, form_data.kasi_ki4].all? {|i| i.present?}
-    kasi_data_arr << [form_data.kasi_ka5, 2, form_data.kasi_ki5] if [form_data.kasi_ka5, form_data.kasi_ki5].all? {|i| i.present?}
+    kasi_data_arr << [self.kasi_ka1, 2, self.kasi_ki1] if [self.kasi_ka1, self.kasi_ki1].all? {|i| i.present?}
+    kasi_data_arr << [self.kasi_ka2, 2, self.kasi_ki2] if [self.kasi_ka2, self.kasi_ki2].all? {|i| i.present?}
+    kasi_data_arr << [self.kasi_ka3, 2, self.kasi_ki3] if [self.kasi_ka3, self.kasi_ki3].all? {|i| i.present?}
+    kasi_data_arr << [self.kasi_ka4, 2, self.kasi_ki4] if [self.kasi_ka4, self.kasi_ki4].all? {|i| i.present?}
+    kasi_data_arr << [self.kasi_ka5, 2, self.kasi_ki5] if [self.kasi_ka5, self.kasi_ki5].all? {|i| i.present?}
 
     return kari_data_arr, kasi_data_arr
   end

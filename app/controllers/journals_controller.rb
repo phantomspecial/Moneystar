@@ -4,7 +4,6 @@ class JournalsController < MastersController
 
   def new
     @form = InputForm.new
-    # binding.pry
   end
 
   def create

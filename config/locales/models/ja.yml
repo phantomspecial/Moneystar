@@ -1,0 +1,7 @@
+ja:
+  activemodel:
+    models:
+      input_form: 仕訳入力フォーム
+    attributes:
+      input_form:
+        kogaki: 小書き欄
