@@ -1,0 +1,28 @@
+= form_for @form, url: journals_path do |f|
+  .form-group
+    | 取引日
+    = Time.zone.today.strftime('%Y年%m月%d日')
+    .rows
+      - category = Category.all
+      | 借方
+      br
+      - 1.upto (5) do |i|
+        = f.collection_select :"kari_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
+        = f.text_field :"kari_ki#{i}"
+        br
+    .rows
+      | 貸方
+      br
+      - 1.upto (5) do |i|
+        = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
+        = f.text_field :"kasi_ki#{i}"
+        br
+
+    .rows
+      = f.label :kogaki
+      = f.text_field :kogaki
+
+    .rows
+      = f.submit value: '記帳', class: 'btn btn-primary'
+
+
