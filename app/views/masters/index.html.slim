@@ -1,8 +1,7 @@
-.rows
-  .col-lg-12
-    h1.text-center
-      | Moneystar  会計帳簿自動記帳システム
-
-.rows
-  .col-lg-12
-    = link_to '新規記帳', new_journal_path, class: 'btn btn-primary'
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      = Time.zone.today.strftime('%Y月%m年%d日')
+      | 時点の財務状況

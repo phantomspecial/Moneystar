@@ -1,28 +1,36 @@
-= form_for @form, url: journals_path do |f|
-  .form-group
-    | 取引日
-    = Time.zone.today.strftime('%Y年%m月%d日')
-    .rows
-      - category = Category.all
-      | 借方
-      br
-      - 1.upto (5) do |i|
-        = f.collection_select :"kari_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
-        = f.text_field :"kari_ki#{i}"
-        br
-    .rows
-      | 貸方
-      br
-      - 1.upto (5) do |i|
-        = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
-        = f.text_field :"kasi_ki#{i}"
-        br
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      = form_for @form, url: journals_path do |f|
+        .form-group.form-wrapper
+          .date
+            | 取引日
+            = Time.zone.today.strftime('%Y年%-m月%-d日')
+          .row
+            - category = Category.all
+            .dr_cr
+              | 借方
+            .col-md-4.form-inline
+              - 1.upto (5) do |i|
+                = f.collection_select :"kari_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}" }, { include_blank: true, class: 'form-control' }
+                = f.text_field :"kari_ki#{i}", class: 'form-control'
+                br
+            .dr_cr
+              | 貸方
+            .col-md-4.form-inline
+              - 1.upto (5) do |i|
+                = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}" }, { include_blank: true, class: 'form-control' }
+                = f.text_field :"kasi_ki#{i}", class: 'form-control'
+                br
 
-    .rows
-      = f.label :kogaki
-      = f.text_field :kogaki
+          .row
+            .col-md-4
+              = f.label :kogaki
+              = f.text_field :kogaki, class: 'form-control'
 
-    .rows
-      = f.submit value: '記帳', class: 'btn btn-primary'
+          .row
+            = f.submit value: '記帳', class: 'btn btn-primary custom-btn'
 
 
