@@ -2,10 +2,62 @@
   font-size: 20px;
 }
 
-.input_box {
-  height: 30px;
+.wrapper {
+  white-space: nowrap;
 }
 
-// .form-wrapper {
-//   width: 1200px;
-// }
+.form_cat {
+  width: 200px !important;
+}
+
+.form_amt {
+  text-align: right;
+  width: 100px !important;
+}
+
+.one_touch_btns,
+.form_kogaki {
+  width: 620px;
+}
+
+.dr_field,
+.cr_field {
+  display: inline-block;
+}
+
+.cr_field {
+  padding-left: 20px;
+}
+
+.form_label {
+  font-size: 18px;
+}
+
+.dr_cr {
+  width: 300px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.dr_total,
+.cr_total {
+  width: 300px;
+  padding-top: 10px;
+  text-align: right;
+  display: flex;
+  .cat_box {
+    width: 200px;
+  }
+  .amt_box {
+    width: 100px;
+    margin-right: 13px;
+  }
+}
+
+.form_spacer {
+  padding-top: 20px;
+}
+
+.btn_spacer {
+  margin-right: 10px;
+}

@@ -4,33 +4,58 @@
   .right
     .wrapper
       = form_for @form, url: journals_path do |f|
-        .form-group.form-wrapper
+        - category = Category.all
+        .form-group
           .date
-            | 取引日
+            | 取引日：
             = Time.zone.today.strftime('%Y年%-m月%-d日')
-          .row
-            - category = Category.all
+
+          .form_spacer
+          .dr_field
             .dr_cr
               | 借方
-            .col-md-4.form-inline
-              - 1.upto (5) do |i|
-                = f.collection_select :"kari_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}" }, { include_blank: true, class: 'form-control' }
-                = f.text_field :"kari_ki#{i}", class: 'form-control'
-                br
+            - 1.upto (5) do |i|
+              .form-inline
+                = f.collection_select :"kari_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { class: 'form-control form_cat' }
+                = f.text_field :"kari_ki#{i}", class: 'form-control form_amt', value: '1000000'
+            .dr_total
+              .cat_box
+                | 借方合計金額
+              .amt_box
+                | 2000000
+          .cr_field
             .dr_cr
               | 貸方
-            .col-md-4.form-inline
-              - 1.upto (5) do |i|
-                = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}" }, { include_blank: true, class: 'form-control' }
-                = f.text_field :"kasi_ki#{i}", class: 'form-control'
-                br
+            - 1.upto (5) do |i|
+              .form-inline
+                = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { class: 'form-control form_cat' }
+                = f.text_field :"kasi_ki#{i}", class: 'form-control form_amt', value: '1000000'
+            .cr_total
+              .cat_box
+                | 貸方合計金額
+              .amt_box
+                | 2000000
 
+          .form_spacer
+          .one_touch_btns
+            .form_label
+              | 一括設定
+            .form-inline
+              = button_to '食/現・U', '', method: :get, class: 'btn btn-outline-info btn-sm btn_spacer'
+              = button_to '食/現', '', method: :get, class: 'btn btn-outline-info btn-sm btn_spacer'
+              = button_to '食/UFJ', '', method: :get, class: 'btn btn-outline-info btn-sm btn_spacer'
+
+          .form_spacer
           .row
             .col-md-4
-              = f.label :kogaki
-              = f.text_field :kogaki, class: 'form-control'
+              .form_label
+                = f.label :kogaki
+              = f.text_field :kogaki, class: 'form-control form_kogaki'
+              br
 
+          .form_spacer
           .row
-            = f.submit value: '記帳', class: 'btn btn-primary custom-btn'
+            .col-md-4
+              = f.submit value: '記帳', class: 'btn btn-primary custom-btn'
 
 

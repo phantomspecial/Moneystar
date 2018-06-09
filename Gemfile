@@ -37,6 +37,7 @@ gem 'jquery-rails'
 
 gem 'devise'
 gem 'slim-rails'
+gem 'font-awesome-rails'
 
 gem 'airbrake'
 gem 'whenever'
