@@ -17,24 +17,24 @@
             - 1.upto (5) do |i|
               .form-inline
                 = f.collection_select :"kari_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { class: 'form-control form_cat' }
-                = f.text_field :"kari_ki#{i}", class: 'form-control form_amt', value: '1000000'
+                = f.text_field :"kari_ki#{i}", id: "amt_form_kari#{i}", class: 'form-control form_amt'
             .dr_total
               .cat_box
                 | 借方合計金額
-              .amt_box
-                | 2000000
+              #kari_amt_total.amt_box
+                | 0
           .cr_field
             .dr_cr
               | 貸方
             - 1.upto (5) do |i|
               .form-inline
                 = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { class: 'form-control form_cat' }
-                = f.text_field :"kasi_ki#{i}", class: 'form-control form_amt', value: '1000000'
+                = f.text_field :"kasi_ki#{i}", id: "amt_form_kasi#{i}", class: 'form-control form_amt'
             .cr_total
               .cat_box
                 | 貸方合計金額
-              .amt_box
-                | 2000000
+              #kasi_amt_total.amt_box
+                | 0
 
           .form_spacer
           .one_touch_btns
@@ -51,7 +51,6 @@
               .form_label
                 = f.label :kogaki
               = f.text_field :kogaki, class: 'form-control form_kogaki'
-              br
 
           .form_spacer
           .row
