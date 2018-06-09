@@ -46,6 +46,6 @@ function total_amt() {
     }
   });
 
-  document.getElementById("kari_amt_total").innerHTML = add_comma(kari_t + '');
-  document.getElementById("kasi_amt_total").innerHTML = add_comma(kasi_t + '');
+  document.getElementById('kari_amt_total').innerHTML = add_comma(kari_t + '');
+  document.getElementById('kasi_amt_total').innerHTML = add_comma(kasi_t + '');
 }
