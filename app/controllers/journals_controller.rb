@@ -12,7 +12,7 @@ class JournalsController < MastersController
     session[:form] = @form = InputForm.new(journal_params)
     return render :new unless @form.valid?
 
-    # @form.journaling
+    @form.journaling
     redirect_to root_path
   end
 
