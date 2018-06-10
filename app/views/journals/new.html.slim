@@ -3,6 +3,10 @@
     = render 'shared/left_pane'
   .right
     .wrapper
+      .error_field
+        - if @form.errors.any?
+          - @form.errors.full_messages.each do |msg|
+            = msg
       = form_for @form, url: journals_path do |f|
         .form-group
           .date
@@ -54,6 +58,6 @@
           .form_spacer
           .row
             .col-md-4
-              = f.submit value: '記帳', class: 'btn btn-primary custom-btn', tabindex: '7'
+              = f.submit value: '記帳', data: {confirm: '仕訳内容を確認して、間違いがなければOKボタンを押してください。'}, class: 'btn btn-primary custom-btn', tabindex: '7'
 
 

@@ -1,15 +1,17 @@
 class JournalsController < MastersController
+  before_action :set_initialize
+
   def index
   end
 
   def new
-    @form = InputForm.new
-    @category = Category.all
-    gon.category = Category.pluck(:name)
+    @form = InputForm.new || session[:form]
   end
 
   def create
-    @form = InputForm.new(journal_params)
+    session[:form] = @form = InputForm.new(journal_params)
+    return render :new unless @form.valid?
+
     @form.journaling
     redirect_to root_path
   end
@@ -23,5 +25,10 @@ class JournalsController < MastersController
                                  :kasi_ka4, :kasi_ki4, :kasi_ka5, :kasi_ki5,
                                  :kogaki
     )
+  end
+
+  def set_initialize
+    @category = Category.all
+    gon.category = Category.pluck(:name)
   end
 end
