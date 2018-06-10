@@ -5,3 +5,6 @@ ja:
     attributes:
       input_form:
         kogaki: 小書き欄
+  errors:
+    messages:
+      blank: が空です。
