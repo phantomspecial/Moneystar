@@ -5,18 +5,26 @@ class InputForm
                  :kasi_ka1, :kasi_ki1, :kasi_ka2, :kasi_ki2, :kasi_ka3, :kasi_ki3, :kasi_ka4, :kasi_ki4, :kasi_ka5, :kasi_ki5,
                  :kogaki
 
+  # validates
+
+
   def journaling
     ins_kari_ar, ins_kasi_ar = jounal_array_maker
 
-    ActiveRecord::Base.transaction do
-      journal = Journal.create(kogaki: kogaki)
+    # to_iの処理
 
-      ins_kari_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
-      ins_kasi_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
 
-      ins_kari_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kasi_ar.length > 1 ? 9999 : ins_kasi_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
-      ins_kasi_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kari_ar.length > 1 ? 9999 : ins_kari_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
-    end
+
+
+    # ActiveRecord::Base.transaction do
+    #   journal = Journal.create(kogaki: kogaki)
+
+    #   ins_kari_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
+    #   ins_kasi_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2]) }
+
+    #   ins_kari_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kasi_ar.length > 1 ? 9999 : ins_kasi_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
+    #   ins_kasi_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kari_ar.length > 1 ? 9999 : ins_kari_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2]) }
+    # end
   end
 
   private

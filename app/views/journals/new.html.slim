@@ -1,28 +1,59 @@
-= form_for @form, url: journals_path do |f|
-  .form-group
-    | 取引日
-    = Time.zone.today.strftime('%Y年%m月%d日')
-    .rows
-      - category = Category.all
-      | 借方
-      br
-      - 1.upto (5) do |i|
-        = f.collection_select :"kari_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
-        = f.text_field :"kari_ki#{i}"
-        br
-    .rows
-      | 貸方
-      br
-      - 1.upto (5) do |i|
-        = f.collection_select :"kasi_ka#{i}", category, :uuid, :name, value: "@form.kari_ka#{i}", include_blank: true
-        = f.text_field :"kasi_ki#{i}"
-        br
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      = form_for @form, url: journals_path do |f|
+        .form-group
+          .date
+            | 取引日：
+            = Time.zone.today.strftime('%Y年%m月%d日')
 
-    .rows
-      = f.label :kogaki
-      = f.text_field :kogaki
+          .form_spacer
+          .dr_field
+            .dr_cr
+              | 借方
+            - 1.upto (5) do |i|
+              .form-inline
+                = f.collection_select :"kari_ka#{i}", @category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { id: "kari_ka#{i}", class: 'form-control form_cat', tabindex: "#{i}" }
+                = f.text_field :"kari_ki#{i}", id: "amt_form_kari#{i}", class: 'form-control form_amt', tabindex: "#{i}"
+            .dr_total
+              .cat_box
+                | 借方合計金額
+              #kari_amt_total.amt_box
+                | 0
+          .cr_field
+            .dr_cr
+              | 貸方
+            - 1.upto (5) do |i|
+              .form-inline
+                = f.collection_select :"kasi_ka#{i}", @category, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { id: "kasi_ka#{i}", class: 'form-control form_cat', tabindex: "#{i}" }
+                = f.text_field :"kasi_ki#{i}", id: "amt_form_kasi#{i}", class: 'form-control form_amt', tabindex: "#{i}"
+            .cr_total
+              .cat_box
+                | 貸方合計金額
+              #kasi_amt_total.amt_box
+                | 0
 
-    .rows
-      = f.submit value: '記帳', class: 'btn btn-primary'
+          .form_spacer
+          .one_touch_btns
+            .form_label
+              | 一括設定
+            .form-inline
+              = link_to '食/現・U', '', id: 'OBT1', class: 'btn btn-outline-info btn-sm btn_spacer'
+              = link_to '食/現', '', id: 'OBT2', class: 'btn btn-outline-info btn-sm btn_spacer'
+              = link_to '食/UFJ', '', id: 'OBT3', class: 'btn btn-outline-info btn-sm btn_spacer'
+
+          .form_spacer
+          .row
+            .col-md-4
+              .form_label
+                = f.label :kogaki
+              = f.text_field :kogaki, class: 'form-control form_kogaki', tabindex: '6'
+
+          .form_spacer
+          .row
+            .col-md-4
+              = f.submit value: '記帳', class: 'btn btn-primary custom-btn', tabindex: '7'
 
 

@@ -1,0 +1,46 @@
+#header {
+  height: 50px;
+  width: 100%;
+  background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+  .text-set {
+    color: #FFFFFF;
+    font-family: 'Century Gothic';
+  }
+  a {
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+  .spacer {
+    padding-left: 40px;
+  }
+}
+
+
+///////////////////////////
+//         pane          //
+///////////////////////////
+
+.top_container {
+  display: flex;
+}
+
+.left {
+  width: 200px;
+  height: 100vh;
+  padding-top: 20px;
+  border-right: 4px solid #888888;
+  .buttons {
+    text-align: center;
+    padding-top: 15px;
+  }
+}
+
+.right {
+  flex: 1;
+  padding-top: 20px;
+  margin-left: 20px;
+}
+
+.custom-btn {
+  width: 150px;
+}

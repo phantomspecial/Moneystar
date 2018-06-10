@@ -4,6 +4,8 @@ class JournalsController < MastersController
 
   def new
     @form = InputForm.new
+    @category = Category.all
+    gon.category = Category.pluck(:name)
   end
 
   def create
