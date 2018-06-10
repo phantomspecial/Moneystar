@@ -10,7 +10,6 @@ class JournalsController < MastersController
 
   def create
     session[:form] = @form = InputForm.new(journal_params)
-    puts @form.valid?
     return render :new unless @form.valid?
 
     # @form.journaling
