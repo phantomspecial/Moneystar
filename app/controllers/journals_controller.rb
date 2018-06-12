@@ -2,6 +2,7 @@ class JournalsController < MastersController
   before_action :set_initialize
 
   def index
+    @journals = Journal.all.includes(:journal_details)
   end
 
   def new

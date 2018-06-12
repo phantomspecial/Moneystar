@@ -26,7 +26,7 @@
 
 .left {
   width: 200px;
-  height: 100vh;
+  min-height: 100vh;
   padding-top: 20px;
   border-right: 4px solid #888888;
   .buttons {
@@ -43,4 +43,8 @@
 
 .custom-btn {
   width: 150px;
+}
+
+.table-width {
+  max-width: 1800px;
 }
