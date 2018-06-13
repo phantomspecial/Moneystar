@@ -1,0 +1,74 @@
+h5.text-center
+  = category.name
+- dr_led = ledgers.where(sfcat_id: category.uuid).where(division: 1)
+- cr_led = ledgers.where(sfcat_id: category.uuid).where(division: 2)
+- dr_total = dr_led.sum(:amount)
+- cr_total = cr_led.sum(:amount)
+- max_length = [dr_led.length, cr_led.length].max - 1
+
+table.table.table-hover.table-sm.table-bordered.text-center
+  tr
+    td 借方合計
+    td = digit_sep(dr_total)
+  tr
+    td 貸方合計
+    td = digit_sep(cr_total)
+  tr.table-secondary
+    td 差引残高
+    td = digit_sep((dr_total - cr_total).abs)
+
+
+table.table.table-hover.table-sm.table-bordered.table-width
+  thead.thead-dark.text-center
+    tr
+      th 月日
+      th 摘要
+      th 仕丁
+      th 借方
+      th 月日
+      th 摘要
+      th 仕丁
+      th 貸方
+  - 0.upto(max_length) do |i|
+    tr
+      - if dr_led[i].present?
+        td.text-center
+          = dr_led[i].created_at.strftime('%Y/%-m/%-d')
+        - if dr_led[i].contra_id == 9999
+          td.text-center
+            | 諸口
+        - else
+          td.text-center
+            = Category.find(dr_led[i].contra_id).name
+        td.text-center
+          = dr_led[i].journal_id
+        td.text-right
+          = digit_sep(dr_led[i].amount)
+      - else
+        td
+        td
+        td
+        td
+      - if cr_led[i].present?
+        td.text-center
+          = cr_led[i].created_at.strftime('%Y/%-m/%-d')
+        - if cr_led[i].contra_id == 9999
+          td.text-center
+            | 諸口
+        - else
+          td.text-center
+            = Category.find(cr_led[i].contra_id).name
+        td.text-center
+          = cr_led[i].journal_id
+        td.text-right
+          = digit_sep(cr_led[i].amount)
+      - else
+        td
+        td
+        td
+        td
+
+
+
+
+

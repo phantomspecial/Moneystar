@@ -38,8 +38,8 @@ class InputForm
     kari_data_arr = []
     kasi_data_arr = []
     0.upto(4) do |i|
-      kari_data_arr << [@kari_ka_arr[i], 1, @kari_ki_arr[i]] if [@kari_ka_arr[i], 1, @kari_ki_arr[i]].all? {|n| n.present?}
-      kasi_data_arr << [@kasi_ka_arr[i], 1, @kasi_ki_arr[i]] if [@kasi_ka_arr[i], 1, @kasi_ki_arr[i]].all? {|n| n.present?}
+      kari_data_arr << [@kari_ka_arr[i], 1, @kari_ki_arr[i]] if [@kari_ka_arr[i], @kari_ki_arr[i]].all? {|n| n.present?}
+      kasi_data_arr << [@kasi_ka_arr[i], 2, @kasi_ki_arr[i]] if [@kasi_ka_arr[i], @kasi_ki_arr[i]].all? {|n| n.present?}
     end
     return kari_data_arr, kasi_data_arr
   end
