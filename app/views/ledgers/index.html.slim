@@ -1,0 +1,24 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      h5 総勘定元帳
+
+      .row
+        .col-2
+          #v-pills-tab.nav.flex-column.nav-pills aria-orientation="vertical" role="tablist"
+            - @categories.each_with_index do |category, idx|
+              - if idx == 0
+                a#v-pills-home-tab.nav-link.active.nav-boxes aria-selected="true" data-toggle="pill" href="##{category.uuid}" role="tab"
+                  = category.name
+              - else
+                a#v-pills-profile-tab.nav-link.nav-boxes aria-selected="false" data-toggle="pill" href="##{category.uuid}" role="tab"
+                  = category.name
+
+
+        .col-9
+          #v-pills-tabContent.tab-content
+            - @categories.each_with_index do |category, idx|
+              div id=category.uuid class="tab-pane fade #{'show active' if idx == 0}" role="tabpanel"
+                = render partial: 'ledgertable', locals: { category: category, ledgers: @ledgers }
