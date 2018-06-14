@@ -1,0 +1,13 @@
+.trial-top-box
+  h5 総合財務管理
+  = link_to '財務諸表作成', trial_settlements_path(ex_param: 'execution'), class: 'btn btn-warning btn-sm exec_btn'
+
+ul.nav.nav-tabs
+  li.nav-item
+    .nav-link.active = link_to '合計残高試算表', trial_settlements_path
+  li.nav-item
+    .nav-link = link_to '損益計算書', profit_settlements_path
+  li.nav-item
+    .nav-link = link_to '貸借対照表', balance_settlements_path
+  li.nav-item
+    .nav-link = link_to 'キャッシュフロー計算書', cashflow_settlements_path

@@ -1,3 +1,13 @@
-// Place all the styles related to the settlements controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.trial-top-box {
+  display: flex;
+  .exec_btn {
+    margin-left: 50px;
+    height: 25px;
+    width: 100px;
+    padding-top: 2px;
+  }
+}
+
+.table-box {
+  padding-top: 1px;
+}

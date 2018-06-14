@@ -1,0 +1,56 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      = render 'top_links'
+      .table-box
+        - dr_bl_total = 0
+        - cr_bl_total = 0
+        table.table.table-hover.table-sm.table-bordered.table-width
+          thead.thead-dark.text-center
+            tr
+              th colspan=8
+                | 合計残高試算表
+            tr
+              th colspan=2
+                | 借方
+              th.align-middle rowspan=2
+                | 元帳番号
+              th.align-middle rowspan=2
+                | 勘定区分
+              th.align-middle rowspan=2
+                | 勘定科目
+              th.align-middle rowspan=2
+                | CF区分
+              th colspan=2
+                | 貸方
+            tr
+              th 残高
+              th 合計
+              th 合計
+              th 残高
+          tbody.text-right
+            - @results.each do |result|
+              tr
+                td = result.dr_cr_flg == 1 ? digit_sep(result.balance) : 0
+                td = digit_sep(result.dr_total)
+                td.text-center
+                  = result.uuid
+                - cat = @categories.find(result.uuid)
+                td.text-center
+                  = cat.cat_name
+                td.text-center
+                  = cat.name
+                td.text-center
+                  = cat.cf_cat
+                td = digit_sep(result.cr_total)
+                td = result.dr_cr_flg == 2 ? digit_sep(result.balance) : 0
+              - result.dr_cr_flg == 1 ? dr_bl_total += result.balance : cr_bl_total += result.balance
+            tr.table-secondary
+              td = digit_sep(dr_bl_total)
+              td = digit_sep(@results.sum(:dr_total))
+              td.text-center colspan=4
+                | 合計
+              td = digit_sep(@results.sum(:cr_total))
+              td = digit_sep(cr_bl_total)
