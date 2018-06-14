@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180603083536) do
+ActiveRecord::Schema.define(version: 20180614130631) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "uuid", null: false
@@ -47,6 +47,16 @@ ActiveRecord::Schema.define(version: 20180603083536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["journal_id"], name: "index_ledgers_on_journal_id"
+  end
+
+  create_table "settlement_trials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "uuid"
+    t.integer "dr_total"
+    t.integer "cr_total"
+    t.integer "dr_cr_flg"
+    t.integer "balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
