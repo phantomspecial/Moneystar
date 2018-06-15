@@ -39,11 +39,11 @@
                   = result.uuid
                 - cat = @categories.find(result.uuid)
                 td.text-center
-                  = cat.cat_name
+                  = cat.sub_category.cat_name
                 td.text-center
                   = cat.name
                 td.text-center
-                  = cat.cf_cat
+                  = cat.cf_category.cat_name
                 td = digit_sep(result.cr_total)
                 td = result.dr_cr_flg == 2 ? digit_sep(result.balance) : 0
               - result.dr_cr_flg == 1 ? dr_bl_total += result.balance : cr_bl_total += result.balance
