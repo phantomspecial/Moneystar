@@ -10,13 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180614130631) do
+ActiveRecord::Schema.define(version: 20180615144145) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "top_category_id", null: false
+    t.bigint "sub_category_id", null: false
+    t.bigint "cf_category_id", null: false
     t.integer "uuid", null: false
-    t.string "cat_name", null: false
-    t.string "cf_cat", null: false
     t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cf_category_id"], name: "index_categories_on_cf_category_id"
+    t.index ["sub_category_id"], name: "index_categories_on_sub_category_id"
+    t.index ["top_category_id"], name: "index_categories_on_top_category_id"
+  end
+
+  create_table "cf_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "cat_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -55,6 +65,21 @@ ActiveRecord::Schema.define(version: 20180614130631) do
     t.integer "cr_total"
     t.integer "dr_cr_flg"
     t.integer "balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sub_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "top_category_id", null: false
+    t.string "cat_name", null: false
+    t.integer "asset_val"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["top_category_id"], name: "index_sub_categories_on_top_category_id"
+  end
+
+  create_table "top_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "cat_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
