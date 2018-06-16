@@ -9,6 +9,7 @@ class SettlementsController < MastersController
   end
 
   def profit
+    @results = SettlementTrial.new.profit_st_maker
   end
 
   def balance

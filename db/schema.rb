@@ -60,13 +60,19 @@ ActiveRecord::Schema.define(version: 20180615144145) do
   end
 
   create_table "settlement_trials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "uuid"
-    t.integer "dr_total"
-    t.integer "cr_total"
-    t.integer "dr_cr_flg"
-    t.integer "balance"
+    t.bigint "top_category_id", null: false
+    t.bigint "sub_category_id", null: false
+    t.bigint "cf_category_id", null: false
+    t.integer "uuid", null: false
+    t.integer "dr_total", null: false
+    t.integer "cr_total", null: false
+    t.integer "dr_cr_flg", null: false
+    t.integer "balance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cf_category_id"], name: "index_settlement_trials_on_cf_category_id"
+    t.index ["sub_category_id"], name: "index_settlement_trials_on_sub_category_id"
+    t.index ["top_category_id"], name: "index_settlement_trials_on_top_category_id"
   end
 
   create_table "sub_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
