@@ -13,12 +13,11 @@ class SettlementsController < MastersController
   end
 
   def balance
+    @results = SettlementTrial.new.balance_st_maker
   end
 
   def cashflow
   end
-
-  # 貸借合計と損益計算書利益・貸借対照表利益の一致を判定する
 
   private
 
