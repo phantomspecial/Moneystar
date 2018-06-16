@@ -1,0 +1,36 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      = render 'top_links'
+      .table-box
+      table.table.table-hover.table-sm.table-width.table-bordered
+        thead.thead-dark
+          tr
+            th.text-center colspan=7
+              | 貸借対照表
+          tr
+            th colspan=4
+            th colspan=3
+              | 集計日：
+              = SettlementTrial.last.created_at.strftime('%-Y/%-m/%-d')
+        tbody
+          - @results.each do |result|
+            tr
+              td
+                = result[0]
+              td
+                = result[1]
+              td
+                = result[2]
+              td
+                = result[3]
+              td.text-right
+                - if result[4].present?
+                  = digit_sep(result[4])
+              td.text-right
+                - if result[5].present?
+                  = digit_sep(result[5])
+              td.text-right
+                = result[6]
