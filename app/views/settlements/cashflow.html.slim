@@ -6,3 +6,29 @@
     .wrapper
       = render 'top_links'
       .table-box
+        table.table.table-hover.table-sm.table-width
+          thead.thead-dark
+            tr
+              th.text-center colspan=5
+                | キャッシュフロー計算書
+            tr
+              th colspan=2
+              th colspan=4
+                | 集計期間：
+                = "#{Time.zone.today.year}/4/1〜"
+                = SettlementTrial.last.created_at.strftime('%-Y/%-m/%-d')
+          tbody
+            - @results.each do |result|
+              tr
+                td
+                  = result[0]
+                td
+                  = result[1]
+                td
+                  = result[2]
+                td.text-right
+                  - if result[3].present?
+                    = digit_sep(result[3])
+                td.text-right
+                  - if result[4].present?
+                    = digit_sep(result[4])

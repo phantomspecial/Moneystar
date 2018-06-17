@@ -17,6 +17,7 @@ class SettlementsController < MastersController
   end
 
   def cashflow
+    @results = SettlementTrial.new.cashflow_st_maker
   end
 
   private

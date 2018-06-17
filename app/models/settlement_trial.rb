@@ -108,7 +108,7 @@ class SettlementTrial < ApplicationRecord
     foa_total = addition(f_oa)
     fa_total = fpe_total + ffa_total + foa_total
     # 繰延資産
-    da_total = addition(da) || 0
+    da_total = addition(da)
     # 総資産
     asset_total = ca_total + fa_total + da_total
     # 負債
@@ -159,6 +159,51 @@ class SettlementTrial < ApplicationRecord
     @result
   end
 
+  def cashflow_st_maker
+    array = []
+    categories = Category.all.order(:uuid)
+    categories.each do |category|
+      cfid = category.cf_category_id
+      uuid = category.uuid
+
+      dr_total = JournalDetail.where(category_id: uuid).where(division: 1).sum(:amount)
+      cr_total = JournalDetail.where(category_id: uuid).where(division: 2).sum(:amount)
+
+      subtract = cr_total - dr_total
+      array << [cfid, category.name, subtract]
+    end
+
+    # 残高0科目の削除・配列からハッシュへの変更
+    array.reject!{ |i| i.third == 0 }
+    cashes = array.select{ |i| i.first == 1 }.map{ |i| [i.second, i.third] }.to_h
+    operate = array.select{ |i| i.first == 2 }.map{ |i| [i.second, i.third] }.to_h
+    invest = array.select{ |i| i.first == 3 }.map{ |i| [i.second, i.third] }.to_h
+    finance = array.select{ |i| i.first == 4 }.map{ |i| [i.second, i.third] }.to_h
+
+    # 出力 使用カラム:5
+    cash_total = addition(cashes)
+    ope_total = addition(operate)
+    inv_total = addition(invest)
+    fin_total = addition(finance)
+    # キャッシュフロー
+    cashflow = ope_total + inv_total + fin_total
+    # 期首現金計算
+    cf_cat_cash = SettlementTrial.where(cf_category_id: 1)
+    current_cash_balance = cf_cat_cash.where(dr_cr_flg: 1).sum(:balance) - cf_cat_cash.where(dr_cr_flg: 2).sum(:balance)
+    b_o_y = current_cash_balance - cashflow
+
+    @result = []
+    cf_cat_arr_maker('営業活動によるキャッシュフロー', operate, ope_total)
+    cf_cat_arr_maker('投資活動によるキャッシュフロー', invest, inv_total)
+    cf_cat_arr_maker('財務活動によるキャッシュフロー', finance, fin_total)
+    cf_total_arr_maker('現金および現金同等物の増減額', cashflow)
+    cf_total_arr_maker('現金および現金同等物の期首残高', b_o_y)
+    cf_total_arr_maker('現金および現金同等物の期末残高', current_cash_balance)
+    cf_total_arr_maker('フリーキャッシュフロー', ope_total + inv_total)
+
+    @result
+  end
+
   private
 
   def hash_maker(sub_cat)
@@ -172,7 +217,7 @@ class SettlementTrial < ApplicationRecord
   end
 
   def addition(hashs)
-    hashs.values.inject(:+)
+    hashs.values.inject(:+) || 0
   end
 
   def percent(ds, dd)
@@ -201,5 +246,17 @@ class SettlementTrial < ApplicationRecord
 
   def pl_subtract_arr_maker(text, val, total)
     @result << ['', '', text, '', val,  percent(val, total)]
+  end
+
+  def cf_cat_arr_maker(c_name, loop_obj, val_total)
+    @result << [c_name, '', '', '', '']
+    loop_obj.each do |key, val|
+      @result << ['', key, '', val, '']
+    end
+    @result << ['', '', c_name + '合計', '', val_total]
+  end
+
+  def cf_total_arr_maker(c_name, total)
+    @result << [c_name, '', '', '', total]
   end
 end
