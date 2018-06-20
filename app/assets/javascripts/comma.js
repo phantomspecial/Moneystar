@@ -1,14 +1,26 @@
 $(function() {
-  $("[id^=amt_form]").keyup(function(){
-    var num = $(this).val();
-    if (num === '') {
-      total_amt();
+  var de;
+
+  de = function() {
+    var d;
+    d = '#input_field';
+
+    if ($.find(d).length !== 1) {
       return;
     }
-    num = add_comma(num);
-    $(this).val(num);
-    total_amt();
-  });
+
+    $("[id^=amt_form]").keyup(function(){
+      var num = $(this).val();
+      if (num === '') {
+        total_amt();
+        return;
+      }
+      num = add_comma(num);
+      $(this).val(num);
+      total_amt();
+    });
+  }
+  $(document).on('turbolinks:load', de);
 });
 
 function valuechk(f_val) {
