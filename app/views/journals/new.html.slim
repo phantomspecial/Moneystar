@@ -2,7 +2,7 @@
   .left
     = render 'shared/left_pane'
   .right
-    .wrapper
+    #input_field.wrapper
       .error_field
         - if @form.errors.any?
           - @form.errors.full_messages.each do |msg|
