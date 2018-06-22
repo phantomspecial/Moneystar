@@ -41,7 +41,7 @@ table.table.table-hover.table-sm.table-bordered.text-center
             td.text-center
               = Category.find(dr_led[i].contra_id).name
           td.text-center
-            = dr_led[i].journal_id
+            = link_to dr_led[i].journal_id, journals_path(anchor: "j#{dr_led[i].journal_id}")
           td.text-right
             = digit_sep(dr_led[i].amount)
         - else
@@ -59,7 +59,7 @@ table.table.table-hover.table-sm.table-bordered.text-center
             td.text-center
               = Category.find(cr_led[i].contra_id).name
           td.text-center
-            = cr_led[i].journal_id
+            = link_to cr_led[i].journal_id, journals_path(anchor: "j#{cr_led[i].journal_id}")
           td.text-right
             = digit_sep(cr_led[i].amount)
         - else
