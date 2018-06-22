@@ -10,10 +10,10 @@
           #v-pills-tab.nav.flex-column.nav-pills aria-orientation="vertical" role="tablist"
             - @categories.each_with_index do |category, idx|
               - if idx == 0
-                a#v-pills-home-tab.nav-link.active.nav-boxes aria-selected="true" data-toggle="pill" href="##{category.uuid}" role="tab"
+                a class="nav-link active nav-boxes nav#{category.uuid}" aria-selected="true" data-toggle="pill" href="##{category.uuid}" role="tab"
                   = category.name
               - else
-                a#v-pills-profile-tab.nav-link.nav-boxes aria-selected="false" data-toggle="pill" href="##{category.uuid}" role="tab"
+                a class="nav-link nav-boxes nav#{category.uuid}" aria-selected="false" data-toggle="pill" href="##{category.uuid}" role="tab"
                   = category.name
 
 
