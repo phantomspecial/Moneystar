@@ -9,6 +9,14 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:index, :new, :create, :edit, :update]
 
+  resources :csv_includes, only: [] do
+    collection do
+      get 'reading'
+      post 'forward_data'
+      post 'journal_data'
+    end
+  end
+
   resources :searches, only: [:index] do
     collection do
       get 'result'

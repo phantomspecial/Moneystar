@@ -34,14 +34,20 @@ table.table.table-hover.table-sm.table-bordered.text-center
         - if dr_led[i].present?
           td.text-center
             = dr_led[i].created_at.strftime('%Y/%-m/%-d')
-          - if dr_led[i].contra_id == 9999
+          - if dr_led[i].contra_id == 0
+            td.text-center
+              | 前期繰越
+          - elsif dr_led[i].contra_id == 9999
             td.text-center
               | 諸口
           - else
             td.text-center
               = Category.find(dr_led[i].contra_id).name
           td.text-center
-            = link_to dr_led[i].journal_id, journals_path(anchor: "j#{dr_led[i].journal_id}")
+            - if dr_led[i].journal_id == 0
+              | 済
+            - else
+              = link_to dr_led[i].journal_id, journals_path(anchor: "j#{dr_led[i].journal_id}")
           td.text-right
             = digit_sep(dr_led[i].amount)
         - else
@@ -52,14 +58,20 @@ table.table.table-hover.table-sm.table-bordered.text-center
         - if cr_led[i].present?
           td.text-center
             = cr_led[i].created_at.strftime('%Y/%-m/%-d')
-          - if cr_led[i].contra_id == 9999
+          - if cr_led[i].contra_id == 0
+            td.text-center
+              | 前期繰越
+          - elsif cr_led[i].contra_id == 9999
             td.text-center
               | 諸口
-          - else
+          -else
             td.text-center
               = Category.find(cr_led[i].contra_id).name
           td.text-center
-            = link_to cr_led[i].journal_id, journals_path(anchor: "j#{cr_led[i].journal_id}")
+            - if cr_led[i].journal_id == 0
+              | 済
+            - else
+              = link_to cr_led[i].journal_id, journals_path(anchor: "j#{cr_led[i].journal_id}")
           td.text-right
             = digit_sep(cr_led[i].amount)
         - else

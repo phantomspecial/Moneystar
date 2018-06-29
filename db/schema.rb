@@ -49,14 +49,13 @@ ActiveRecord::Schema.define(version: 20180615144145) do
   end
 
   create_table "ledgers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "journal_id"
+    t.integer "journal_id", null: false
     t.integer "contra_id", null: false
     t.integer "division"
     t.integer "sfcat_id", null: false
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["journal_id"], name: "index_ledgers_on_journal_id"
   end
 
   create_table "settlement_trials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
