@@ -14,7 +14,7 @@ class JournalsController < MastersController
     return render :new unless @form.valid?
 
     @form.journaling
-    redirect_to root_path
+    redirect_to root_path , success: '記帳処理は正常に完了いたしました。'
   end
 
   private

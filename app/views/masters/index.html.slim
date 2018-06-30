@@ -2,6 +2,10 @@
   .left
     = render 'shared/left_pane'
   .right
+    - flash.each do |name, msg|
+      div class=("alert alert-#{name}")
+        a.close data-dismiss="alert"  ×
+        = msg
     .wrapper
       = Time.zone.today.strftime('%Y年%m月%d日')
       | 時点の財務状況

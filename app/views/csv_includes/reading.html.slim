@@ -2,6 +2,10 @@
   .left
     = render 'shared/left_pane'
   .right
+    - flash.each do |name, msg|
+      div class=("alert alert-#{name}")
+        a.close data-dismiss="alert"  ×
+        = msg
     .wrapper
       h5 CSV入力
       h6 期首データ入力

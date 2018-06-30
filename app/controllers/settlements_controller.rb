@@ -4,6 +4,7 @@ class SettlementsController < MastersController
   def trial
     if params[:ex_param] == 'execution'
       SettlementTrial.new.execute_trial_table
+      flash[:success] = '要求された処理は正常に完了しました。'
     end
     @results = SettlementTrial.all
   end
