@@ -69,12 +69,55 @@ class CsvProcessor
       Category.delete_all
 
       new_cat_arr.each do |record|
-        Category.create(top_category_id: record[0], sub_category_id: record[1], cf_category_id: record[3], uuid: record[6].to_i, name: record[2])
+        Category.create(top_category_id: record[0], sub_category_id: record[1], cf_category_id: record[3], uuid: record[6].to_i, name: record[2], created_at: Time.zone.local(Time.now.year, 4, 1))
       end
 
       ledger_data = new_cat_arr.select{|i| i[0] <= 3 && i[5] != 0}
       ledger_data.each do |record|
-        Ledger.create(journal_id: 0, contra_id: 0, division: record[4], sfcat_id: record[6].to_i, amount: record[5])
+        Ledger.create(journal_id: 0, contra_id: 0, division: record[4], sfcat_id: record[6].to_i, amount: record[5], created_at: Time.zone.local(Time.now.year, 4, 1))
+      end
+    end
+  end
+
+  def journal_csv_import(file)
+    file_data = []
+    CSV.foreach(file.path, headers: true) do |r|
+      file_data << r.values_at
+    end
+
+    cat_hash = Category.all.pluck(:name, :uuid).to_h.freeze
+
+    file_data.each do |r|
+      r[0] = r[0].to_i
+      r[1] = r[1].to_i
+      r[2] = r[2].to_i
+      r[3] = r[3].to_i
+      r[4] = cat_hash[r[4]]
+      r[5] = r[5].delete(',').to_i
+    end
+
+    # Validations
+    flg = false
+    file_data.each do |r|
+      flg = r.any? { |i| i.nil? }
+    end
+    return if flg
+
+    max_id = file_data.map{|i| i[0]}.max
+
+    1.upto (max_id) do |i|
+      r_data = file_data.select { |r| r[0] == i }
+      ins_kari_ar = r_data.select { |r| r[3] == 1 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
+      ins_kasi_ar = r_data.select { |r| r[3] == 2 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
+
+      ActiveRecord::Base.transaction do
+        journal = Journal.create(kogaki: r_data[0][6], created_at: Time.zone.local(Time.now.year, r_data[0][1], r_data[0][2]))
+
+        ins_kari_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2], created_at: r[3]) }
+        ins_kasi_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2], created_at: r[3]) }
+
+        ins_kari_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kasi_ar.length > 1 ? 9999 : ins_kasi_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2], created_at: r[3]) }
+        ins_kasi_ar.map { |r| Ledger.create(journal_id: journal.id, contra_id: ins_kari_ar.length > 1 ? 9999 : ins_kari_ar.first[0], division: r[1], sfcat_id: r[0], amount: r[2], created_at: r[3]) }
       end
     end
   end

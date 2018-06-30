@@ -5,11 +5,11 @@
     .wrapper
       h5 CSV入力
       h6 期首データ入力
-      = form_tag forward_data_csv_includes_path ,{ multipart: true } do
+      = form_tag forward_data_csv_includes_path, { multipart: true } do
         = file_field_tag :file
         = submit_tag '期首データインポート', class: 'btn btn-primary'
       h6 仕訳データ入力
-      = form_tag ({ controller: :csv_includes, action: :journal_data, method: :post }) do
+      = form_tag journal_data_csv_includes_path, { multipart: true } do
         = file_field_tag :file
         = submit_tag '仕訳データインポート', class: 'btn btn-primary'
 
