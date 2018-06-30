@@ -3,6 +3,11 @@
   .left
     = render 'shared/left_pane'
   .right
+    - if request.fullpath.include?('execution')
+      - flash.each do |name, msg|
+        div class=("alert alert-#{name}")
+          a.close data-dismiss="alert"  ×
+          = msg
     .wrapper
       = render 'top_links'
       .table-box
