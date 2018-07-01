@@ -7,5 +7,355 @@
         a.close data-dismiss="alert"  ×
         = msg
     .wrapper
-      = Time.zone.today.strftime('%Y年%m月%d日')
-      | 時点の財務状況
+      .date
+        = Time.zone.today.strftime('%Y年%m月%d日')
+        | 時点の財務状況
+      .tables
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th 勘定科目
+              th 残高
+          tbody
+            tr
+              td 現金
+              td
+            tr
+              td ゆうちょ
+              td
+            tr
+              td UFJ
+              td
+            tr
+              td Suica
+              td
+            tr
+              td VISAカード
+              td
+            tr
+              td 未払水道光熱費
+              td
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th 集計科目
+              th 金額
+          tbody
+            tr
+              td 有効現預金(VISA光)
+              td
+            tr
+              td 先月末残高
+              td
+            tr
+              td 先月末差
+              td
+            tr
+              td 現預金合計
+              td
+            tr
+              td 総資金合計
+              td
+            tr
+              td 負債合計
+              td
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th 集計科目
+              th 金額
+          tbody
+            tr
+              td 営業利益
+              td
+            tr
+              td 経常利益
+              td
+            tr
+              td 当期純利益
+              td
+            tr
+              td 営業CF
+              td
+            tr
+              td 投資CF
+              td
+            tr
+              td FCF
+              td
+      .tables
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th 当月予算比
+            tr
+              th 科目
+              th 月予算額
+              th 進捗予算
+              th 実行額
+              th 予算進捗率
+              th 過不足額
+              th 過不足率
+          tbody
+            tr
+              td 食費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 消耗品費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 娯楽費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 交通費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 服織費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 医療美容費
+              td
+              td
+              td
+              td
+              td
+              td
+            tr
+              td 主要変動費合計
+              td
+              td
+              td
+              td
+              td
+              td
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th 当月収支概要
+            tr
+              th 科目
+              th 月予算額
+              th 実行額
+              th 過不足額
+              th 過不足率
+          tbody
+            tr
+              td 給与収入
+              td
+              td
+              td
+              td
+            tr
+              td 固定費合計
+              td
+              td
+              td
+              td
+            tr
+              td
+                | (△うち減価償却)
+              td
+              td
+              td
+              td
+            tr
+              td 利用可能変動費
+              td
+              td
+              td
+              td
+            tr
+              td 変動費合計
+              td
+              td
+              td
+              td
+            tr
+              td 費用合計
+              td
+              td
+              td
+              td
+            tr
+              td 資産支出
+              td
+              td
+              td
+              td
+            tr
+              td 負債支出
+              td
+              td
+              td
+              td
+            tr
+              td 差引
+              td
+              td
+              td
+              td
+      .tables
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th PL/CF
+            tr
+              th 科目/月
+              th 前月までの累計
+              th 当月変動
+          tbody
+            tr
+              td 売上高
+              td
+              td
+            tr
+              td 売上原価
+              td
+              td
+            tr
+              td 売上総利益
+              td
+              td
+            tr
+              td 販管費
+              td
+              td
+            tr
+              td 営業利益
+              td
+              td
+            tr
+              td 営業外収益
+              td
+              td
+            tr
+              td 営業外費用
+              td
+              td
+            tr
+              td 経常利益
+              td
+              td
+            tr
+              td 特別利益
+              td
+              td
+            tr
+              td 特別損失
+              td
+              td
+            tr
+              td 当期純利益
+              td
+              td
+            tr
+              td 営業CF
+              td
+              td
+            tr
+              td 投資CF
+              td
+              td
+            tr
+              td 財務CF
+              td
+              td
+            tr
+              td FCF
+              td
+              td
+        table.table.table-hover.table-sm.table-bordered
+          thead.thead-dark
+            tr
+              th BS
+            tr
+              th 科目/月
+              th 前月末
+              th 当月変動
+          tbody
+            tr
+              td 総資金
+              td
+              td
+            tr
+              td 当座資産
+              td
+              td
+            tr
+              td 棚卸資産
+              td
+              td
+            tr
+              td その他流動資産
+              td
+              td
+            tr
+              td 流動資産合計
+              td
+              td
+            tr
+              td 有形固定資産
+              td
+              td
+            tr
+              td 無形固定資産
+              td
+              td
+            tr
+              td 投資その他の資産
+              td
+              td
+            tr
+              td 固定資産合計
+              td
+              td
+            tr
+              td 資産合計
+              td
+              td
+            tr
+              td 流動負債
+              td
+              td
+            tr
+              td 固定負債
+              td
+              td
+            tr
+              td 負債合計
+              td
+              td
+            tr
+              td 資本金
+              td
+              td
+            tr
+              td 利益剰余金
+              td
+              td
+
