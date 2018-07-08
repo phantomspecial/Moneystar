@@ -40,6 +40,7 @@ gem 'slim-rails'
 gem 'font-awesome-rails'
 
 gem 'gon'
+gem 'holiday_jp'
 
 gem 'airbrake'
 gem 'whenever'
