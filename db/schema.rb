@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180615144145) do
+ActiveRecord::Schema.define(version: 20180704141822) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "top_category_id", null: false
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 20180615144145) do
 
   create_table "cf_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cat_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "estimates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "uuid", null: false
+    t.integer "m_est", null: false
+    t.string "cost_cat", null: false
+    t.text "memo1"
+    t.text "memo2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
