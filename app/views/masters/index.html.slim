@@ -10,13 +10,13 @@
       .date
         = Time.zone.today.strftime('%Y年%-m月%-d日')
         | 時点の財務状況
-      - pl_cm_total = pl_cm_total_hash
-      - cf_cm_total = cf_cm_total_hash
-      - bs_cm_data = bs_cm_data_hash
-      - estimate_data = cost_month_estimate_hash
-      - balance_data = balance_current_month_hash
-      - payday_est_data = payday_estimate_data_hash
-      - payday_blce_data = payday_balance_data_hash
+      - pl_cm_total = pl_current_month_total_hash
+      - cf_cm_total = cf_current_month_total_hash
+      - bs_cm_data = bs_current_month_total_hash
+      - month_estimate_data = estimate_hash('month')
+      - month_balance_overview = balance_overview('month')
+      - payday_estimate_data = estimate_hash('payday')
+      - payday_balance_overview = balance_overview('payday')
       .tables
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -24,51 +24,21 @@
               th 勘定科目
               th 残高
           tbody
-            tr
-              td 現金
-              td = digit_sep(cat_total(1101, 1))
-            tr
-              td ゆうちょ
-              td = digit_sep(cat_total(1104, 1))
-            tr.table-info
-              td UFJ
-              td = digit_sep(cat_total(1105, 1))
-            tr
-              td Suica
-              td = digit_sep(cat_total(1108, 1))
-            tr
-              td SBI
-              td = digit_sep(cat_total(1601, 1))
-            tr
-              td VISAカード
-              td = digit_sep(cat_total(2106, 2))
-            tr
-              td 未払水道光熱費
-              td = digit_sep(cat_total(2107, 2))
+            - category_balance_total_hash.each do |row|
+              tr class="#{'table-info' if %w(UFJ預金).include?(row.first)}"
+                td = row.first
+                td = digit_sep(row.second)
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
             tr
               th 集計科目
               th 金額
           tbody
-            tr
-              td 有効現預金(VISA光)
-              td = digit_sep(available_cash)
-            tr
-              td 先月末残高
-              td = digit_sep(last_month_data)
-            tr.table-warning
-              td 先月末差
-              td = digit_sep(lst_diff)
-            tr
-              td 現預金合計
-              td = digit_sep(total_cash)
-            tr
-              td 総資金合計
-              td = digit_sep(super_total_cash)
-            tr
-              td 負債合計
-              td = digit_sep(debt_total)
+            - aggregate_hash.each do |row|
+              tr class="#{'table-warning' if %w(先月末差).include?(row.first)}"
+                td = row.first
+                td = digit_sep(row.second)
+
       .tables
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -82,19 +52,11 @@
               th 進捗予算比
               th 過不足額
           tbody
-            - estimate_data.each do |row|
-              tr class="#{'table-warning' if row.first == '食費'}"
+            - month_estimate_data.each do |row|
+              tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
                   td = digit_sep(r)
-
-            tr.table-warning
-              td 主要変動費合計
-              - 0.upto(4) do |i|
-                - if i != 3
-                  td = digit_sep(estimate_data.values.map { |r| r[i] }.inject(:+))
-                - else
-                  td -----
 
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -102,15 +64,12 @@
               th 当月収支概要
             tr
               th 科目
-              th 月予算額
               th 実行額
-              th 過不足額
           tbody
-            - balance_data.each do |row|
-              tr
+            - month_balance_overview.each do |row|
+              tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
-                - row.second.each do |r|
-                  td = digit_sep(r)
+                td = digit_sep(row.second)
 
       .tables
         table.table.table-hover.table-sm.table-bordered
@@ -125,19 +84,11 @@
               th 進捗予算比
               th 過不足額
           tbody
-            - payday_est_data.each do |row|
-              tr class="#{'table-warning' if row.first == '食費'}"
+            - payday_estimate_data.each do |row|
+              tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
                   td = digit_sep(r)
-
-            tr.table-warning
-              td 主要変動費合計
-              - 0.upto(4) do |i|
-                - if i != 3
-                  td = digit_sep(payday_est_data.values.map { |r| r[i] }.inject(:+))
-                - else
-                  td -----
 
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -145,15 +96,12 @@
               th 15日開始収支概要
             tr
               th 科目
-              th 月予算額
               th 実行額
-              th 過不足額
           tbody
-            - payday_blce_data.each do |row|
-              tr
+            - payday_balance_overview.each do |row|
+              tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
-                - row.second.each do |r|
-                  td = digit_sep(r)
+                td = digit_sep(row.second)
 
       .tables
         table.table.table-hover.table-sm.table-bordered
