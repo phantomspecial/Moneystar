@@ -271,7 +271,10 @@ module MastersHelper
 
     result['費用合計'] = result['固定費合計(減価償却以外)'] + result['変動費合計']
 
-    result['収支'] = cf_category_range_total(1, 1, start_date, end_date)
+    result['VISAカード'] = category_range_total(2106, 2, start_date, end_date)
+    result['未払水道光熱費'] = category_range_total(2107, 2, start_date, end_date)
+
+    result['収支'] = cf_category_range_total(1, 1, start_date, end_date) - result['VISAカード'] - result['未払水道光熱費']
 
     amortization_cost = AMORTIZATION_UUIDS.map { |uuid| category_range_total(uuid, 1, start_date, end_date) }.inject(:+)
     result['損益'] = result['収益合計'] - result['費用合計'] - amortization_cost
