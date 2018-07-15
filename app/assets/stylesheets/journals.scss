@@ -1,10 +1,9 @@
+///////////////////////////
+//         new          //
+///////////////////////////
+
 .date {
   font-size: 20px;
-}
-
-.wrapper {
-  white-space: nowrap;
-  margin-right: 20px;
 }
 
 .form_cat {
@@ -61,4 +60,24 @@
 
 .btn_spacer {
   margin-right: 10px;
+}
+
+.wrapper {
+  white-space: nowrap;
+  margin-right: 20px;
+}
+
+///////////////////////////
+//         index         //
+///////////////////////////
+
+#journal_book_header {
+  width: calc(100% - 15px);
+  margin-bottom: -16px;
+}
+
+#journal_book {
+  width: 100%;
+  height: calc(100vh - 150px) ;
+  overflow-y: scroll;
 }

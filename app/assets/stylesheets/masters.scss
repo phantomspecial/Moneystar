@@ -26,7 +26,7 @@
 
 .left {
   width: 200px;
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
   padding-top: 20px;
   border-right: 4px solid #888888;
   .buttons {
