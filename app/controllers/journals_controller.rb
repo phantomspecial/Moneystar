@@ -30,6 +30,7 @@ class JournalsController < MastersController
 
   def set_initialize
     @category = Category.all
+    @sub_category = SubCategory.all
     gon.category = Category.pluck(:name)
   end
 end
