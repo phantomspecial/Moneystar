@@ -27,7 +27,7 @@
             - category_balance_total_hash.each do |row|
               tr class="#{'table-info' if %w(UFJ預金).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
             tr
@@ -37,7 +37,7 @@
             - aggregate_hash.each do |row|
               tr class="#{'table-warning' if %w(先月末差).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
 
       .tables
         table.table.table-hover.table-sm.table-bordered
@@ -56,7 +56,7 @@
               tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
-                  td = digit_sep(r)
+                  td.text-right = digit_sep(r)
 
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -69,7 +69,7 @@
             - month_balance_overview.each do |row|
               tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
 
       .tables
         table.table.table-hover.table-sm.table-bordered
@@ -88,7 +88,7 @@
               tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
-                  td = digit_sep(r)
+                  td.text-right = digit_sep(r)
 
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -101,7 +101,7 @@
             - payday_balance_overview.each do |row|
               tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
 
       .tables
         table.table.table-hover.table-sm.table-bordered
@@ -115,12 +115,12 @@
             - pl_cm_total.each do |row|
               tr class="#{'table-warning' if %w(売上高 売上総利益 営業利益 経常利益 当期純利益).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
 
             - cf_cm_total.each do |row|
               tr class="#{'table-warning' if row.first == 'FCF'}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
 
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -133,4 +133,4 @@
             - bs_cm_data.each do |row|
               tr class="#{'table-warning' if %w(総資金 当座資産 流動資産合計 負債合計 利益剰余金).include?(row.first)}"
                 td = row.first
-                td = digit_sep(row.second)
+                td.text-right = digit_sep(row.second)
