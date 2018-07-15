@@ -6,50 +6,53 @@
       h5 仕訳帳
       - dr_total = 0
       - cr_total = 0
-      #journal_book
+      #journal_book_header
         table.table.table-hover.table-sm.table-bordered.table-width
           thead.thead-dark.text-center
             - @journals.klass::HEADERS.each do |h|
               th = h
-          - @journals.each do |journal|
-            - journal.journal_details.each.with_index(1) do |jd, idx|
-              tr.table-light
-                - if idx == 1
-                  td.text-center
-                    = journal.created_at.strftime('%Y/%-m/%-d')
-                - elsif idx == 2
-                  td.text-center
-                    = journal.id
-                - else
-                  td
+      #journal_book
+        table.table.table-hover.table-sm.table-width
+          tbody
+            - @journals.each do |journal|
+              - journal.journal_details.each.with_index(1) do |jd, idx|
+                tr.table-light
+                  - if idx == 1
+                    td.text-center
+                      = journal.created_at.strftime('%Y/%-m/%-d')
+                  - elsif idx == 2
+                    td.text-center
+                      = journal.id
+                  - else
+                    td
 
-                - if jd.division == 1
-                  td.text-center
-                    = '(' + @category.find(jd.category_id).name + ')'
-                  td
-                  td.text-center
-                    = link_to jd.category_id, ledgers_path(jd.category_id)
-                  td.text-right
-                    = digit_sep(jd.amount)
-                  td
-                  - dr_total += jd.amount
-                - else
-                  td
-                  td.text-center
-                    = '(' + @category.find(jd.category_id).name + ')'
-                  td.text-center
-                    = link_to jd.category_id, ledgers_path(jd.category_id)
-                  td
-                  td.text-right
-                    = digit_sep(jd.amount)
-                  - cr_total += jd.amount
+                  - if jd.division == 1
+                    td.text-center
+                      = '(' + @category.find(jd.category_id).name + ')'
+                    td
+                    td.text-center
+                      = link_to jd.category_id, ledgers_path(jd.category_id)
+                    td.text-right
+                      = digit_sep(jd.amount)
+                    td
+                    - dr_total += jd.amount
+                  - else
+                    td
+                    td.text-center
+                      = '(' + @category.find(jd.category_id).name + ')'
+                    td.text-center
+                      = link_to jd.category_id, ledgers_path(jd.category_id)
+                    td
+                    td.text-right
+                      = digit_sep(jd.amount)
+                    - cr_total += jd.amount
 
-            tr.text-center.table-info id="j#{journal.id + 1}"
-              td colspan=6
-                = journal.kogaki
+              tr.text-center.table-info id="j#{journal.id + 1}"
+                td colspan=6
+                  = journal.kogaki
 
-          tr.text-right
-            td colspan=4
-              | 貸借合計
-            td = digit_sep(dr_total)
-            td = digit_sep(cr_total)
+            tr.text-right#journal_total
+              td colspan=4
+                | 貸借合計
+              td = digit_sep(dr_total)
+              td = digit_sep(cr_total)
