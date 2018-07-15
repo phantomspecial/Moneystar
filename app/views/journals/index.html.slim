@@ -9,41 +9,45 @@
       #journal_book_header
         table.table.table-hover.table-sm.table-bordered.table-width
           thead.thead-dark.text-center
-            - @journals.klass::HEADERS.each do |h|
-              th = h
+            th.date_id_col 日付/ID
+            th.category_col 借方科目
+            th.category_col 貸方科目
+            th.ledger_num_col 元帳番号
+            th.amount_col 借方金額
+            th.amount_col 貸方金額
       #journal_book
-        table.table.table-hover.table-sm.table-width
+        table.table.table-hover.table-sm.table-bordered.table-width
           tbody
             - @journals.each do |journal|
               - journal.journal_details.each.with_index(1) do |jd, idx|
                 tr.table-light
                   - if idx == 1
-                    td.text-center
+                    td.text-center.date_id_col
                       = journal.created_at.strftime('%Y/%-m/%-d')
                   - elsif idx == 2
-                    td.text-center
+                    td.text-center.date_id_col
                       = journal.id
                   - else
-                    td
+                    td.date_id_col
 
                   - if jd.division == 1
-                    td.text-center
+                    td.text-center.category_col
                       = '(' + @category.find(jd.category_id).name + ')'
-                    td
-                    td.text-center
+                    td.category_col
+                    td.text-center.ledger_num_col
                       = link_to jd.category_id, ledgers_path(jd.category_id)
-                    td.text-right
+                    td.text-right.amount_col
                       = digit_sep(jd.amount)
-                    td
+                    td.amount_col
                     - dr_total += jd.amount
                   - else
-                    td
-                    td.text-center
+                    td.category_col
+                    td.text-center.category_col
                       = '(' + @category.find(jd.category_id).name + ')'
-                    td.text-center
+                    td.text-center.ledger_num_col
                       = link_to jd.category_id, ledgers_path(jd.category_id)
-                    td
-                    td.text-right
+                    td.amount_col
+                    td.text-right.amount_col
                       = digit_sep(jd.amount)
                     - cr_total += jd.amount
 

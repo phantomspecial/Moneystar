@@ -71,13 +71,39 @@
 //         index         //
 ///////////////////////////
 
+:root{
+  --date_id_amount_col_width: 13%;
+  --category_col_width: 26%;
+  --ledger_num_col_width: 9%;
+}
+
 #journal_book_header {
   width: calc(100% - 15px);
   margin-bottom: -16px;
+  .date_id_col,
+  .amount_col {
+    width: var(--date_id_amount_col_width);
+  }
+  .category_col {
+    width: var(--category_col_width);
+  }
+  .ledger_num_col {
+    width: var(--ledger_num_col_width);
+  }
 }
 
 #journal_book {
   width: 100%;
   height: calc(100vh - 150px) ;
   overflow-y: scroll;
+  .date_id_col,
+  .amount_col {
+    width: var(--date_id_amount_col_width);
+  }
+  .category_col {
+    width: var(--category_col_width);
+  }
+  .ledger_num_col {
+    width: var(--ledger_num_col_width);
+  }
 }
