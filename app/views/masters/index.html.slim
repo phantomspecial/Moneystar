@@ -17,6 +17,8 @@
       - month_balance_overview = balance_overview('month')
       - payday_estimate_data = estimate_hash('payday')
       - payday_balance_overview = balance_overview('payday')
+      - month_estimate_calc_data = estimate_pl_calculation('month')
+      - payday_estimate_calc_date = estimate_pl_calculation('payday')
       .tables
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
@@ -40,6 +42,7 @@
                 td.text-right = digit_sep(row.second)
 
       .tables
+        / 当月データ
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
             tr
@@ -53,7 +56,7 @@
               th 過不足額
           tbody
             - month_estimate_data.each do |row|
-              tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
+              tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
                   td.text-right = digit_sep(r)
@@ -65,13 +68,41 @@
             tr
               th 科目
               th 実行額
+
           tbody
             - month_balance_overview.each do |row|
               tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
                 td.text-right = digit_sep(row.second)
 
+      table.table.table-sm.table-bordered
+        tr
+          th.table-secondary.align-middle rowspan=2
+            | 進捗
+            br
+            | 収入
+          td.text-right.align-middle rowspan=2 = digit_sep(month_estimate_calc_data['進捗収入'])
+          th.table-secondary.align-middle rowspan=2
+            | 進捗
+            br
+            | 変動費
+          td.text-right.align-middle rowspan=2 = digit_sep(month_estimate_calc_data['進捗変動費'])
+          th.table-secondary 貢献利益
+          td.text-right = digit_sep(month_estimate_calc_data['貢献利益'])
+          th.table-secondary 期間固定費
+          td.text-right = digit_sep(month_estimate_calc_data['期間固定費'])
+          th.table-secondary 予算損益
+          td.text-right = digit_sep(month_estimate_calc_data['予算損益'])
+        tr
+          th.table-secondary 進捗固定費
+          td.text-right = digit_sep(month_estimate_calc_data['進捗固定費'])
+          th.table-secondary 費用合計
+          td.text-right = digit_sep(month_estimate_calc_data['費用合計'])
+          th.table-secondary 進捗損益
+          td.text-right = digit_sep(month_estimate_calc_data['進捗損益'])
+
       .tables
+        / 15日開始データ
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
             tr
@@ -85,7 +116,7 @@
               th 過不足額
           tbody
             - payday_estimate_data.each do |row|
-              tr class="#{'table-warning' if %w(食費 主要変動費合計).include?(row.first)}"
+              tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
                 td = row.first
                 - row.second.each do |r|
                   td.text-right = digit_sep(r)
@@ -102,6 +133,32 @@
               tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
                 td = row.first
                 td.text-right = digit_sep(row.second)
+
+      table.table.table-sm.table-bordered
+        tr
+          th.table-secondary.align-middle rowspan=2
+            | 進捗
+            br
+            | 収入
+          td.text-right.align-middle rowspan=2 = digit_sep(payday_estimate_calc_date['進捗収入'])
+          th.table-secondary.align-middle rowspan=2
+            | 進捗
+            br
+            | 変動費
+          td.text-right.align-middle rowspan=2 = digit_sep(payday_estimate_calc_date['進捗変動費'])
+          th.table-secondary 貢献利益
+          td.text-right = digit_sep(payday_estimate_calc_date['貢献利益'])
+          th.table-secondary 期間固定費
+          td.text-right = digit_sep(payday_estimate_calc_date['期間固定費'])
+          th.table-secondary 予算損益
+          td.text-right = digit_sep(payday_estimate_calc_date['予算損益'])
+        tr
+          th.table-secondary 進捗固定費
+          td.text-right = digit_sep(payday_estimate_calc_date['進捗固定費'])
+          th.table-secondary 費用合計
+          td.text-right = digit_sep(payday_estimate_calc_date['費用合計'])
+          th.table-secondary 進捗損益
+          td.text-right = digit_sep(payday_estimate_calc_date['進捗損益'])
 
       .tables
         table.table.table-hover.table-sm.table-bordered
