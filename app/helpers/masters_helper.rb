@@ -201,7 +201,7 @@ module MastersHelper
     0.upto(4) do |i|
       total_data << (i == 3 ? '-----' : costs.values.map { |r| r[i] }.inject(:+))
     end
-    result['主要変動費合計'] = total_data
+    result['管理対象費用合計'] = total_data
 
     result
   end
@@ -239,6 +239,16 @@ module MastersHelper
       m_est = Time.zone.now.month.even? ? m_est.first.m_est : m_est.second.m_est
       progress_estimate = m_est * st_to_current_days / st_to_end_days
       cm_t = category_range_total(uuid, 1, start_date, end_date)
+    elsif uuid == 2202
+      m_est = Estimate.find_by(uuid: uuid).m_est
+      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      cm_t = category_range_total(uuid, 2, start_date, end_date)
+
+    elsif uuid == 5205
+      m_est = Estimate.where(uuid: uuid)
+      m_est = Time.zone.now.month.even? ? m_est.second.m_est : m_est.first.m_est
+      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      cm_t = category_range_total(uuid, 1, start_date, end_date)
 
     else
       return [0, 0, category_range_total(uuid, 1, start_date, end_date), 0, 0 - category_range_total(uuid, 1, start_date, end_date)]
@@ -250,7 +260,7 @@ module MastersHelper
   end
 
   def balance_overview(flg)
-    # 予算日：右側
+    # 予算比：右側
     result = {}
     start_date, end_date = flg == 'month' ? month_total_days : payday_total_days
 
@@ -282,6 +292,57 @@ module MastersHelper
     # 未経過日数(当日含む)
     unexpired_days = (end_date.to_date - Time.current.to_date).to_i + 1
     result['1日あたり利用可能変動費'] = (result['収支'] / unexpired_days).floor
+
+    result
+  end
+
+  def estimate_pl_calculation(flg)
+    # 進捗収入/進捗変動費/貢献利益/期間固定費/予算利益/進捗固定費/費用合計/進捗損益の計算
+    result = {}
+    start_date, end_date = flg == 'month' ? month_total_days : payday_total_days
+    st_to_end_days = (end_date.to_date - start_date.to_date).to_i + 1
+    st_to_current_days = (Time.current.to_date - start_date.to_date).to_i + 1
+
+    # 進捗収入
+    progress_income =  estimate_total(4102, flg).second
+
+    # 進捗変動費
+    progress_v_cost_array = []
+    [5102, 5204, 5211, 5303].each do |uuid|
+      progress_v_cost_array << estimate_total(uuid, flg).second
+    end
+    progress_v_cost_total = progress_v_cost_array.inject(:+)
+
+    # 貢献利益
+    marginal_income = progress_income - progress_v_cost_total
+
+    # 期間固定費
+    estimate_f_cost_array = []
+    [2202, 5203, 5205, 5210, 5214, 5302].each do |uuid|
+      estimate_f_cost_array << estimate_total(uuid, flg).first
+    end
+    estimate_f_cost_total = estimate_f_cost_array.inject(:+)
+
+    # 予算損益
+    estimate_profit = marginal_income - estimate_f_cost_total
+
+    # 進捗固定費
+    progress_f_cost_total = estimate_f_cost_total * st_to_current_days / st_to_end_days
+
+    # 費用合計
+    progress_cost_total = progress_v_cost_total + progress_f_cost_total
+
+    # 進捗損益
+    progress_profit = progress_income - progress_cost_total
+
+    result['進捗収入'] = progress_income
+    result['進捗変動費'] = progress_v_cost_total
+    result['貢献利益'] = marginal_income
+    result['期間固定費'] = estimate_f_cost_total
+    result['予算損益'] = estimate_profit
+    result['進捗固定費'] = progress_f_cost_total
+    result['費用合計'] = progress_cost_total
+    result['進捗損益'] = progress_profit
 
     result
   end
