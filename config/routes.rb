@@ -17,13 +17,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :searches, only: [:index] do
-    collection do
-      get 'result'
-      get 'download'
-    end
-  end
-
   resources :settlements, only: [] do
     collection do
       get 'trial'
