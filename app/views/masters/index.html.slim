@@ -10,19 +10,10 @@
       .date
         = Time.zone.today.strftime('%Y年%-m月%-d日')
         | 時点の財務状況
-      - pl_cm_total = pl_current_month_total_hash
-      - cf_cm_total = cf_current_month_total_hash
-      - bs_cm_data = bs_current_month_total_hash
-      - month_estimate_data = estimate_hash('month')
-      - month_balance_overview = balance_overview('month')
-      - payday_estimate_data = estimate_hash('payday')
-      - payday_balance_overview = balance_overview('payday')
-      - month_estimate_calc_data = estimate_pl_calculation('month')
-      - payday_estimate_calc_date = estimate_pl_calculation('payday')
       .tables
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
-            tr
+            tr.text-center
               th 勘定科目
               th 残高
           tbody
@@ -32,7 +23,7 @@
                 td.text-right = digit_sep(row.second)
         table.table.table-hover.table-sm.table-bordered
           thead.thead-dark
-            tr
+            tr.text-center
               th 集計科目
               th 金額
           tbody
@@ -41,153 +32,54 @@
                 td = row.first
                 td.text-right = digit_sep(row.second)
 
-      .tables
-        / 当月データ
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th 当月予算比
-            tr
-              th 科目
-              th 月予算額
-              th 進捗予算
-              th 実行額
-              th 進捗予算比
-              th 過不足額
-          tbody
-            - month_estimate_data.each do |row|
-              tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
-                td = row.first
-                - row.second.each do |r|
-                  td.text-right = digit_sep(r)
+      / 当月データ
+      table.table.table-hover.table-sm.table-bordered
+        thead.thead-dark.text-center
+          tr
+            th 当月予算比
+            th colspan=5
+              = progress_remain_days('month')
+          tr
+            th 科目
+            th 月予算額
+            th 進捗予算
+            th 実行額
+            th 進捗予算比
+            th 過不足額
+        tbody
+          - estimate_hash('month').each do |row|
+            tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
+              td = row.first
+              - row.second.each do |r|
+                td.text-right = digit_sep(r)
+        thead.thead-light
+          tr.text-right
+            - total_balance_overview('month').each do |row|
+              th = row.first
+              td = digit_sep(row.second)
 
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th 当月収支概要
-            tr
-              th 科目
-              th 実行額
-
-          tbody
-            - month_balance_overview.each do |row|
-              tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
-                td = row.first
-                td.text-right = digit_sep(row.second)
-
-      table.table.table-sm.table-bordered
-        tr
-          th.table-secondary.align-middle rowspan=2
-            | 進捗
-            br
-            | 収入
-          td.text-right.align-middle rowspan=2 = digit_sep(month_estimate_calc_data['進捗収入'])
-          th.table-secondary.align-middle rowspan=2
-            | 進捗
-            br
-            | 変動費
-          td.text-right.align-middle rowspan=2 = digit_sep(month_estimate_calc_data['進捗変動費'])
-          th.table-secondary 貢献利益
-          td.text-right = digit_sep(month_estimate_calc_data['貢献利益'])
-          th.table-secondary 期間固定費
-          td.text-right = digit_sep(month_estimate_calc_data['期間固定費'])
-          th.table-secondary 予算損益
-          td.text-right = digit_sep(month_estimate_calc_data['予算損益'])
-        tr
-          th.table-secondary 進捗固定費
-          td.text-right = digit_sep(month_estimate_calc_data['進捗固定費'])
-          th.table-secondary 費用合計
-          td.text-right = digit_sep(month_estimate_calc_data['費用合計'])
-          th.table-secondary 進捗損益
-          td.text-right = digit_sep(month_estimate_calc_data['進捗損益'])
-
-      .tables
-        / 15日開始データ
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th 15日開始収支
-            tr
-              th 科目
-              th 月予算額
-              th 進捗予算
-              th 実行額
-              th 進捗予算比
-              th 過不足額
-          tbody
-            - payday_estimate_data.each do |row|
-              tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
-                td = row.first
-                - row.second.each do |r|
-                  td.text-right = digit_sep(r)
-
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th 15日開始収支概要
-            tr
-              th 科目
-              th 実行額
-          tbody
-            - payday_balance_overview.each do |row|
-              tr class="#{'table-warning' if %w(収支 損益).include?(row.first)}"
-                td = row.first
-                td.text-right = digit_sep(row.second)
-
-      table.table.table-sm.table-bordered
-        tr
-          th.table-secondary.align-middle rowspan=2
-            | 進捗
-            br
-            | 収入
-          td.text-right.align-middle rowspan=2 = digit_sep(payday_estimate_calc_date['進捗収入'])
-          th.table-secondary.align-middle rowspan=2
-            | 進捗
-            br
-            | 変動費
-          td.text-right.align-middle rowspan=2 = digit_sep(payday_estimate_calc_date['進捗変動費'])
-          th.table-secondary 貢献利益
-          td.text-right = digit_sep(payday_estimate_calc_date['貢献利益'])
-          th.table-secondary 期間固定費
-          td.text-right = digit_sep(payday_estimate_calc_date['期間固定費'])
-          th.table-secondary 予算損益
-          td.text-right = digit_sep(payday_estimate_calc_date['予算損益'])
-        tr
-          th.table-secondary 進捗固定費
-          td.text-right = digit_sep(payday_estimate_calc_date['進捗固定費'])
-          th.table-secondary 費用合計
-          td.text-right = digit_sep(payday_estimate_calc_date['費用合計'])
-          th.table-secondary 進捗損益
-          td.text-right = digit_sep(payday_estimate_calc_date['進捗損益'])
-
-      .tables
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th PL/CF
-            tr
-              th 科目
-              th 当月変動
-          tbody
-            - pl_cm_total.each do |row|
-              tr class="#{'table-warning' if %w(売上高 売上総利益 営業利益 経常利益 当期純利益).include?(row.first)}"
-                td = row.first
-                td.text-right = digit_sep(row.second)
-
-            - cf_cm_total.each do |row|
-              tr class="#{'table-warning' if row.first == 'FCF'}"
-                td = row.first
-                td.text-right = digit_sep(row.second)
-
-        table.table.table-hover.table-sm.table-bordered
-          thead.thead-dark
-            tr
-              th BS
-            tr
-              th 科目
-              th 当月変動
-          tbody
-            - bs_cm_data.each do |row|
-              tr class="#{'table-warning' if %w(総資金 当座資産 流動資産合計 負債合計 利益剰余金).include?(row.first)}"
-                td = row.first
-                td.text-right = digit_sep(row.second)
+      / 15日開始データ
+      table.table.table-hover.table-sm.table-bordered
+        thead.thead-dark.text-center
+          tr
+            th 15日開始予算比
+            th colspan=5
+              = progress_remain_days('payday')
+          tr
+            th 科目
+            th 月予算額
+            th 進捗予算
+            th 実行額
+            th 進捗予算比
+            th 過不足額
+        tbody
+          - estimate_hash('payday').each do |row|
+            tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
+              td = row.first
+              - row.second.each do |r|
+                td.text-right = digit_sep(r)
+        thead.thead-light
+          tr.text-right
+            - total_balance_overview('payday').each do |row|
+              th = row.first
+              td = digit_sep(row.second)
