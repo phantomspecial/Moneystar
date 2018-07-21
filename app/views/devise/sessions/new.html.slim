@@ -1,0 +1,20 @@
+#devise_wrapper
+  #login_form
+    h3.text-primary
+      | Moneystar
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .field
+        = f.text_field :username, autofocus: true, placeholder: 'Please enter your username', class: 'form-control devise_form'
+      br
+      .field
+        = f.email_field :email, placeholder: 'Please enter your email', class: 'form-control devise_form'
+      br
+      .field
+        = f.password_field :password, autocomplete: "off", placeholder: 'Please enter your password', class: 'form-control devise_form'
+      br
+      - if devise_mapping.rememberable?
+        .field
+          = f.check_box :remember_me
+          = f.label :remember_me
+      .actions
+        = f.submit "Log in", class: 'btn btn-primary devise_form'
