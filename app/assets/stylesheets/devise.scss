@@ -1,0 +1,25 @@
+#devise_wrapper {
+  font-family: sans-serif;
+  background-color: #f2f4f8;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  #login_form {
+    text-align: center;
+    height: 50%;
+    width: 50%;
+    -webkit-animation: anime1 2s ease;
+    .devise_form {
+      margin: 0 auto;
+      width: 50%;
+      min-width: 260px;
+    }
+  }
+}
+
+@-webkit-keyframes anime1 {
+  0% {top: -40px;opacity: 0;}
+  100% {top: 0px; opacity: 1;}
+}

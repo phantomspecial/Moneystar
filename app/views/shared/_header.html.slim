@@ -4,23 +4,24 @@
       = image_tag 'shared/logo.png', size: 40
   .navbar-brand.text-set
     | Moneystar
-  #Navber.collapse.navbar-collapse
-    ul.navbar-nav.mr-auto
-      li.nav-item.active.spacer
-        .navbar-text.text-set
-          | 会計年度：
-          | 2018
-      li.nav-item.active.spacer
-        .navbar-text.text-set
-          #clockarea
-    ul.navbar-nav.navbar-right
-      li.nav-item
-        .navbar-text.text-set
-          | USERNAME
-      li.nav-item
-        = link_to '', class: 'nav-link' do
-          i.fa.fa-cog
-          | 管理画面
-      li.nav-item
-        = link_to '', class: 'nav-link' do
-          | ログアウト
+  - if user_signed_in?
+    #Navber.collapse.navbar-collapse
+      ul.navbar-nav.mr-auto
+        li.nav-item.active.spacer
+          .navbar-text.text-set
+            | 会計年度：
+            | 2018
+        li.nav-item.active.spacer
+          .navbar-text.text-set
+            #clockarea
+      ul.navbar-nav.navbar-right
+        li.nav-item
+          .navbar-text.text-set
+            = current_user.username
+        li.nav-item
+          = link_to '', class: 'nav-link' do
+            i.fa.fa-cog
+            | 管理画面
+        li.nav-item
+          = link_to destroy_user_session_path, method: :delete, class: 'nav-link' do
+            | ログアウト

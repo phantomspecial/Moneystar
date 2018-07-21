@@ -4928,17 +4928,20 @@ input[type="button"].btn-block {
   color: #0b2e13;
 }
 
-.alert-info {
+.alert-info,
+.alert-notice {
   color: #0c5460;
   background-color: #d1ecf1;
   border-color: #bee5eb;
 }
 
-.alert-info hr {
+.alert-info hr ,
+.alert-notice hr{
   border-top-color: #abdde5;
 }
 
-.alert-info .alert-link {
+.alert-info .alert-link ,
+.alert-notice .alert-link{
   color: #062c33;
 }
 
@@ -4956,17 +4959,20 @@ input[type="button"].btn-block {
   color: #533f03;
 }
 
-.alert-danger {
+.alert-danger,
+.alert-alert {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }
 
-.alert-danger hr {
+.alert-danger hr,
+.alert-alert hr {
   border-top-color: #f1b0b7;
 }
 
-.alert-danger .alert-link {
+.alert-danger .alert-link,
+.alert-alert .alert-link {
   color: #491217;
 }
 

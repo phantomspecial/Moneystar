@@ -1,0 +1,13 @@
+#devise_wrapper
+  #login_form
+    h3
+      | Forgot your password?
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+      = devise_error_messages!
+      .field
+        = f.label :email
+        br
+        = f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control devise_form'
+      br
+      .actions
+        = f.submit "Password reset", class: 'btn btn-primary devise_form'
