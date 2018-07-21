@@ -1,7 +1,4 @@
 module MastersHelper
-  FIXED_COST_UUIDS = [5203, 5205, 5210, 5214, 5302]
-  AMORTIZATION_UUIDS = [5208, 5209]
-
   def category_total(uuid, default_division)
     # その科目の単純合計
     dr_t = @ledgers.where(sfcat_id: uuid).where(division: 1).sum(:amount)
@@ -135,71 +132,15 @@ module MastersHelper
     result
   end
 
-  def pl_current_month_total_hash
-    start_date, end_date = month_total_days
-
-    result = {}
-    result['売上高'] = sub_category_range_total(13, 2, start_date, end_date)
-    result['売上原価'] = sub_category_range_total(16, 1, start_date, end_date)
-    result['売上総利益'] = result['売上高'] - result['売上原価']
-    result['販管費'] = sub_category_range_total(17, 1, start_date, end_date)
-    result['営業利益'] = result['売上総利益'] - result['販管費']
-    result['営業外収益'] = sub_category_range_total(14, 2, start_date, end_date)
-    result['営業外費用'] = sub_category_range_total(18, 1, start_date, end_date)
-    result['経常利益'] = result['営業利益'] + result['営業外収益'] - result['営業外費用']
-    result['特別利益'] = sub_category_range_total(15, 2, start_date, end_date)
-    result['特別損失'] = sub_category_range_total(19, 1, start_date, end_date)
-    result['当期純利益'] = result['経常利益'] + result['特別利益'] - result['特別損失']
-
-    @profit = result['当期純利益']
-    result
-  end
-
-  def cf_current_month_total_hash
-    start_date, end_date = month_total_days
-
-    result = {}
-    result['営業CF'] = cf_category_range_total(2, 2, start_date, end_date)
-    result['投資CF'] = cf_category_range_total(3, 2, start_date, end_date)
-    result['財務CF'] = cf_category_range_total(4, 2, start_date, end_date)
-    result['FCF'] = result['営業CF'] + result['投資CF']
-
-    result
-  end
-
-  def bs_current_month_total_hash
-    start_date, end_date = month_total_days
-
-    result = {}
-    result['総資金'] = cf_category_range_total(1, 1, start_date, end_date) + category_range_total(1601, 1, start_date, end_date)
-    result['当座資産'] = sub_category_range_total(1, 1, start_date, end_date)
-    result['その他流動資産'] = sub_category_range_total(3, 1, start_date, end_date)
-    result['流動資産合計'] = result['当座資産'] + sub_category_range_total(2, 1, start_date, end_date) + result['その他流動資産']
-    result['有形固定資産'] = sub_category_range_total(4, 1, start_date, end_date)
-    result['無形固定資産'] = sub_category_range_total(5, 1, start_date, end_date)
-    result['投資その他の資産'] = sub_category_range_total(6, 1, start_date, end_date)
-    result['固定資産合計'] = result['有形固定資産'] + result['無形固定資産'] + result['投資その他の資産']
-    result['資産合計'] = top_category_range_total(1, 1, start_date, end_date)
-    result['流動負債'] = sub_category_range_total(8, 2, start_date, end_date)
-    result['固定負債'] = sub_category_range_total(9, 2, start_date, end_date)
-    result['負債合計'] = result['流動負債'] + result['固定負債']
-    result['資本/資本剰余金'] = sub_category_range_total(10, 2, start_date, end_date) + sub_category_range_total(11, 2, start_date, end_date)
-    result['利益剰余金'] = sub_category_range_total(12, 2, start_date, end_date) + @profit
-
-    result
-  end
-
   def estimate_hash(flg)
-    # 予算比：左側
     result = {}
-    [4102, 5102, 5204, 5211, 5215, 5303, 5202, 5302].each do |uuid|
+    [5102, 5204, 5211, 5215, 5303, 5202, 5302].each do |uuid|
       result[@categories.find_by(uuid: uuid).name] = estimate_total(uuid, flg)
     end
     # 主要変動費合計
-    costs = result.reject { |i| i == '給与収入' }
     total_data = []
     0.upto(4) do |i|
-      total_data << (i == 3 ? '-----' : costs.values.map { |r| r[i] }.inject(:+))
+      total_data << (i == 3 ? '-----' : result.values.map { |r| r[i] }.inject(:+))
     end
     result['管理対象費用合計'] = total_data
 
@@ -259,90 +200,17 @@ module MastersHelper
     [m_est, progress_estimate, cm_t, estimate_ratio, divide]
   end
 
-  def balance_overview(flg)
-    # 予算比：右側
+  def total_balance_overview(flg)
     result = {}
     start_date, end_date = flg == 'month' ? month_total_days : payday_total_days
 
-    result['収益合計'] = top_category_range_total(4, 2, start_date, end_date)
+    result['期間損益'] = top_category_range_total(4, 2, start_date, end_date) - top_category_range_total(5, 1, start_date, end_date)
 
-    fixed_cost_total = 0
-    FIXED_COST_UUIDS.each do |uuid|
-      fixed_cost_total += category_range_total(uuid, 1, start_date, end_date)
-    end
-    result['固定費合計(減価償却以外)'] = fixed_cost_total
+    visa_utils = category_range_total(2106, 2, start_date, end_date) + category_range_total(2107, 2, start_date, end_date)
+    result['期間収支'] = cf_category_range_total(1, 1, start_date, end_date) - visa_utils
 
-    variable_cost_uuids = @categories.where(top_category_id: 5).pluck(:uuid) - FIXED_COST_UUIDS - AMORTIZATION_UUIDS
-    variable_cost = 0
-    variable_cost_uuids.each do |uuid|
-      variable_cost += category_range_total(uuid, 1, start_date, end_date)
-    end
-    result['変動費合計'] = variable_cost
-
-    result['費用合計'] = result['固定費合計(減価償却以外)'] + result['変動費合計']
-
-    result['VISAカード'] = category_range_total(2106, 2, start_date, end_date)
-    result['未払水道光熱費'] = category_range_total(2107, 2, start_date, end_date)
-
-    result['収支'] = cf_category_range_total(1, 1, start_date, end_date) - result['VISAカード'] - result['未払水道光熱費']
-
-    amortization_cost = AMORTIZATION_UUIDS.map { |uuid| category_range_total(uuid, 1, start_date, end_date) }.inject(:+)
-    result['損益'] = result['収益合計'] - result['費用合計'] - amortization_cost
-
-    # 未経過日数(当日含む)
     unexpired_days = (end_date.to_date - Time.current.to_date).to_i + 1
-    result['1日あたり利用可能変動費'] = (result['収支'] / unexpired_days).floor
-
-    result
-  end
-
-  def estimate_pl_calculation(flg)
-    # 進捗収入/進捗変動費/貢献利益/期間固定費/予算利益/進捗固定費/費用合計/進捗損益の計算
-    result = {}
-    start_date, end_date = flg == 'month' ? month_total_days : payday_total_days
-    st_to_end_days = (end_date.to_date - start_date.to_date).to_i + 1
-    st_to_current_days = (Time.current.to_date - start_date.to_date).to_i + 1
-
-    # 進捗収入
-    progress_income =  estimate_total(4102, flg).second
-
-    # 進捗変動費
-    progress_v_cost_array = []
-    [5102, 5204, 5211, 5303].each do |uuid|
-      progress_v_cost_array << estimate_total(uuid, flg).second
-    end
-    progress_v_cost_total = progress_v_cost_array.inject(:+)
-
-    # 貢献利益
-    marginal_income = progress_income - progress_v_cost_total
-
-    # 期間固定費
-    estimate_f_cost_array = []
-    [2202, 5203, 5205, 5210, 5214, 5302].each do |uuid|
-      estimate_f_cost_array << estimate_total(uuid, flg).first
-    end
-    estimate_f_cost_total = estimate_f_cost_array.inject(:+)
-
-    # 予算損益
-    estimate_profit = marginal_income - estimate_f_cost_total
-
-    # 進捗固定費
-    progress_f_cost_total = estimate_f_cost_total * st_to_current_days / st_to_end_days
-
-    # 費用合計
-    progress_cost_total = progress_v_cost_total + progress_f_cost_total
-
-    # 進捗損益
-    progress_profit = progress_income - progress_cost_total
-
-    result['進捗収入'] = progress_income
-    result['進捗変動費'] = progress_v_cost_total
-    result['貢献利益'] = marginal_income
-    result['期間固定費'] = estimate_f_cost_total
-    result['予算損益'] = estimate_profit
-    result['進捗固定費'] = progress_f_cost_total
-    result['費用合計'] = progress_cost_total
-    result['進捗損益'] = progress_profit
+    result['1日あたり'] = (result['期間収支'] / unexpired_days).floor
 
     result
   end
@@ -353,6 +221,17 @@ module MastersHelper
   end
 
   # 日付計算メソッド
+  def progress_remain_days(flg)
+    # 経過日数、未経過日数を表示する。
+    # 今日は未経過とする。
+    start_date, end_date = flg == 'month' ? month_total_days : payday_total_days
+
+    progress_days = (Time.current.to_date - start_date.to_date).to_i
+    remain_days = (end_date.to_date - Time.current.to_date).to_i + 1
+
+    "経過日数：#{progress_days}日　　/　　残り日数：#{remain_days}日"
+  end
+
   def month_total_days
     # 今月の開始日と終了日を求める
     today = Time.current
