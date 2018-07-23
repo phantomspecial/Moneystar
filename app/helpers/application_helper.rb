@@ -12,4 +12,7 @@ module ApplicationHelper
     arr.map { |i| delete_sep(i) }
   end
 
+  def negative_num?(num)
+    num.is_a?(Integer) && num.negative?
+  end
 end
