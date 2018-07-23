@@ -27,4 +27,6 @@ Rails.application.routes.draw do
       get 'download'
     end
   end
+
+  resources :monthly_finance, only: [:index]
 end

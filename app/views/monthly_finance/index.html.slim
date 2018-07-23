@@ -1,0 +1,100 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    - flash.each do |name, msg|
+      div class=("alert alert-#{name}")
+        a.close data-dismiss="alert"  ×
+        = msg
+    .wrapper
+      | 財政状態集計シート
+      table.table.table-hover.table-sm.table-bordered
+        thead.thead-dark
+          tr.text-center
+            th 項目
+            th 期首
+            - @month_array.each do |m|
+              th = m.to_s + '月'
+            th 平均
+        tbody
+          tr
+            td 現金月末残高(VISA)
+            - table_row('visa_m_balance').each do |data|
+              td.text-right = digit_sep(data)
+          tr
+            td 入金前現金残高(VISA)
+            - table_row('bfp_visa_m_balance').each do |data|
+              td.text-right = digit_sep(data)
+          tr
+            td 現金月末残高
+            - table_row('m_balance').each do |data|
+              td.text-right = digit_sep(data)
+          tr
+            td 入金前フロー
+            - table_row('bfp_flow').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td FCF
+            - table_row('free_cf').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 営業CF
+            - table_row('o_cf').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 投資CF
+            - table_row('i_cf').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 投資CF
+            - table_row('f_cf').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 累積FCF
+            - table_row('accum_cf').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 入金額
+            - table_row('deposit_cash').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 出金額
+            - table_row('payment_cash').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 総合計資金
+            - table_row('super_total_cash').each do |data|
+              td.text-right = digit_sep(data)
+          tr
+            td 総合計資金(VISA)
+            - table_row('super_total_visa_cash').each do |data|
+              td.text-right = digit_sep(data)
+          tr
+            td 単純利益
+            - table_row('m_profit').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+          tr
+            td 累積利益
+            - table_row('accum_profit').each do |data|
+              td.text-right class="#{ 'text-danger' if negative_num?(data) }"
+                = digit_sep(data)
+      .graph_field
+        canvas#CF_GRAPH
+          javascript: draw_graph();
+        canvas#BALANCE_GRAPH
+          javascript: draw_graph();
+        canvas#SUPER_TOTAL_GRAPH
+          javascript: draw_graph();
+        canvas#ACHIEVEMENT_RATE
+          javascript: draw_graph();
+        canvas#PROFIT_GRAPH
+          javascript: draw_graph();

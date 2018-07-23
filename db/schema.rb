@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180721133039) do
+ActiveRecord::Schema.define(version: 20180722075308) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "top_category_id", null: false
@@ -64,6 +64,27 @@ ActiveRecord::Schema.define(version: 20180721133039) do
     t.integer "division"
     t.integer "sfcat_id", null: false
     t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "monthly_finances", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "month"
+    t.integer "visa_m_balance"
+    t.integer "bfp_visa_m_balance"
+    t.integer "m_balance"
+    t.integer "bfp_flow"
+    t.integer "free_cf"
+    t.integer "o_cf"
+    t.integer "i_cf"
+    t.integer "f_cf"
+    t.integer "accum_cf"
+    t.integer "deposit_cash"
+    t.integer "payment_cash"
+    t.integer "super_total_cash"
+    t.integer "super_total_visa_cash"
+    t.integer "m_profit"
+    t.integer "accum_profit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -41,6 +41,7 @@ gem 'font-awesome-rails'
 
 gem 'gon'
 gem 'holiday_jp'
+gem 'chart-js-rails'
 
 gem 'airbrake'
 gem 'whenever'
