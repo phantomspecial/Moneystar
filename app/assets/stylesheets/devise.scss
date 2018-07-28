@@ -8,9 +8,8 @@
   align-items: center;
   #login_form {
     text-align: center;
-    height: 50%;
     width: 50%;
-    -webkit-animation: anime1 2s ease;
+    -webkit-animation: anime1 1.5s ease;
     .devise_form {
       margin: 0 auto;
       width: 50%;
@@ -20,6 +19,14 @@
 }
 
 @-webkit-keyframes anime1 {
-  0% {top: -40px;opacity: 0;}
-  100% {top: 0px; opacity: 1;}
+  0% {
+    top: -50px;
+    opacity: 0;
+    margin-top: -50px
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+    margin-top: 0;
+  }
 }

@@ -19,7 +19,7 @@
           .navbar-text.text-set
             = current_user.username
         li.nav-item
-          = link_to '', class: 'nav-link' do
+          = link_to edit_user_registration_path, class: 'nav-link' do
             i.fa.fa-cog
             | 管理画面
         li.nav-item

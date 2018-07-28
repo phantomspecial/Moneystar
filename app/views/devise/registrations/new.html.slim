@@ -32,7 +32,7 @@
       .field
         = f.label :fiscal_year
         br
-        = f.select :fiscal_year, [*1..12], selected: 4, class: 'form-control devise_form'
+        = f.select :fiscal_year, [*1..12], { selected: 3 }, { class: 'form-control devise_form text-right' }
       br
       .actions
         = f.submit "Sign up", class: 'btn btn-primary devise_form'
