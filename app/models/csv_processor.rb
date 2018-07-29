@@ -105,14 +105,14 @@ class CsvProcessor
     end
     return 4 if flg
 
-    max_id = file_data.map{|i| i[0]}.max
+    max_id = file_data.map { |i| i[0] }.max
 
-    1.upto (max_id) do |i|
-      r_data = file_data.select { |r| r[0] == i }
-      ins_kari_ar = r_data.select { |r| r[3] == 1 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
-      ins_kasi_ar = r_data.select { |r| r[3] == 2 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
+    ActiveRecord::Base.transaction do
+      1.upto (max_id) do |i|
+        r_data = file_data.select { |r| r[0] == i }
+        ins_kari_ar = r_data.select { |r| r[3] == 1 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
+        ins_kasi_ar = r_data.select { |r| r[3] == 2 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
 
-      ActiveRecord::Base.transaction do
         journal = Journal.create(kogaki: r_data[0][6], created_at: Time.zone.local(Time.now.year, r_data[0][1], r_data[0][2]))
 
         ins_kari_ar.map { |r| JournalDetail.create(journal_id: journal.id, category_id: r[0], division: r[1], amount: r[2], created_at: r[3]) }
@@ -123,6 +123,8 @@ class CsvProcessor
       end
     end
     nil
+    rescue
+    return 5
   end
 
   private

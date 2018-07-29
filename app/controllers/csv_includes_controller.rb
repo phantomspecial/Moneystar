@@ -25,7 +25,8 @@ class CsvIncludesController < MastersController
             2 => { success: '仕訳データ入力処理は正常に完了しました。' },
             3 => { danger: 'ファイルが選択されていません。'},
             4 => { danger: '選択されたファイルは適正な形式ではありません。' },
-            5 => { danger: '内部エラーです。' }
+            5 => { danger: 'SQL挿入エラーです。' },
+            6 => { danger: '内部エラーです。' }
           }
 
     redirect_to reading_csv_includes_path, msg[msg_code]
