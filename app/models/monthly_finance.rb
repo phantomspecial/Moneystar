@@ -1,18 +1,4 @@
 class MonthlyFinance < ApplicationRecord
-=begin
-    設計
-
-    monthly_finance_makerとpayday_data_makerは名称を整えて、argument => ym をもらうようにする。
-    ymは 201804　のように年月を6けたで表示したものとする。
-    集計するのは、ymで指定された年月のデータとする。
-      ex: ym = 201805　　=>   集計範囲：2018/05/01〜2018/05/31
-
-    initialize_dataは、CSVの初期データ投入時に処理を行う。
-    monthは0とする。
-    bfp_visa_m_balanceはどうする？？？？？？？？？？
-    期首データ投入時に必要な、visa_m_balance, m_balanceは、CSV初期データ投入時に計算する。（期首データテーブル構想？）
-
-=end
   def monthly_data(ym)
     # ym月末のデータを作成する
     # payday_data_makerで作成した行をアップデートする
@@ -47,19 +33,24 @@ class MonthlyFinance < ApplicationRecord
     MonthlyFinance.create(month: Time.current.month, bfp_visa_m_balance: bfp_vmb, bfp_flow: flow)
   end
 
-  def initialize_data
+  def initialize_data(bvmb)
     # 期首データ作成
-    if equal_user_fiscal_year?
-      MonthlyFinance.create(month: 0, visa_m_balance: 0, bfp_visa_m_balance: 0, m_balance: 0, bfp_flow: 0, free_cf: 0,
-                            o_cf: 0, i_cf: 0, f_cf: 0, accum_cf: 0, deposit_cash: 0, payment_cash: 0 ,
-                            super_total_cash: 0, super_total_visa_cash: 0, m_profit: 0, accum_profit: 0)
-    end
+    set_instance
+    mb = total_cash
+    stc = super_total_cash
+    vu = visa_utils
+    vmb = mb - vu
+    stvc = stc - vu
+
+    MonthlyFinance.create(month: 0, visa_m_balance: vmb, bfp_visa_m_balance: bvmb, m_balance: mb, bfp_flow: 0, free_cf: 0,
+                          o_cf: 0, i_cf: 0, f_cf: 0, accum_cf: 0, deposit_cash: 0, payment_cash: 0 ,
+                          super_total_cash: stc, super_total_visa_cash: stvc, m_profit: 0, accum_profit: 0)
   end
 
   private
 
   def equal_user_fiscal_year?(add = 0)
-    Time.current.month == User.find(1).fiscal_year + add
+    Time.current.month == User.first.fiscal_year + add
   end
 
   def set_instance
