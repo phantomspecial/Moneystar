@@ -8,13 +8,20 @@
         = msg
     .wrapper
       h5 CSV入力
-      h6 期首データ入力
-      = form_tag forward_data_csv_includes_path, { multipart: true } do
-        = file_field_tag :file
-        = submit_tag '期首データインポート', class: 'btn btn-primary'
-      h6 仕訳データ入力
-      = form_tag journal_data_csv_includes_path, { multipart: true } do
-        = file_field_tag :file
-        = submit_tag '仕訳データインポート', class: 'btn btn-primary'
-
-
+      .csv_include
+        .forward_data
+          h6 期首データ入力
+          p データ見本
+          = image_tag('csv_includes/forward_data_csv.png')
+          .btn_field
+            = form_tag forward_data_csv_includes_path, { multipart: true } do
+              = file_field_tag :file
+              = submit_tag '期首データインポート', class: 'btn btn-primary'
+        .journal_data
+          h6 仕訳データ入力
+          p データ見本
+          = image_tag('csv_includes/journal_data_csv.png')
+          .btn_field
+            = form_tag journal_data_csv_includes_path, { multipart: true } do
+              = file_field_tag :file
+              = submit_tag '仕訳データインポート', class: 'btn btn-primary'
