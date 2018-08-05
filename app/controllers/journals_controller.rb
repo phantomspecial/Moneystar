@@ -29,8 +29,8 @@ class JournalsController < MastersController
   end
 
   def set_initialize
-    @category = Category.all
+    @category = Category.all.order(:uuid)
     @sub_category = SubCategory.all
-    gon.category = Category.pluck(:name)
+    gon.category = Category.order(:uuid).pluck(:name)
   end
 end

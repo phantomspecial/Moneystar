@@ -31,7 +31,7 @@
               | 貸方
             - 1.upto (5) do |i|
               .form-inline
-                = f.grouped_collection_select :"kasi_ka#{i}", @sub_category.all, :categories, :cat_name, :uuid, :name, { value: "@form.kari_ka#{i}", include_blank: true }, { id: "kari_ka#{i}", class: 'form-control form_cat', tabindex: "#{i}" }
+                = f.grouped_collection_select :"kasi_ka#{i}", @sub_category.all, :categories, :cat_name, :uuid, :name, { value: "@form.kasi_ka#{i}", include_blank: true }, { id: "kasi_ka#{i}", class: 'form-control form_cat', tabindex: "#{i}" }
                 = f.text_field :"kasi_ki#{i}", id: "amt_form_kasi#{i}", class: 'form-control form_amt', tabindex: "#{i}"
             .cr_total
               .cat_box
@@ -44,9 +44,8 @@
             .form_label
               | 一括設定
             .form-inline
-              = link_to '食/現・U', '', id: 'OBT1', class: 'btn btn-outline-info btn-sm btn_spacer'
-              = link_to '食/現', '', id: 'OBT2', class: 'btn btn-outline-info btn-sm btn_spacer'
-              = link_to '食/UFJ', '', id: 'OBT3', class: 'btn btn-outline-info btn-sm btn_spacer'
+              - JournalsHelper::ONE_TOUCH_BTNS.each.with_index(1) do |name, idx|
+                = link_to name, '', id: "OBT#{idx}", class: 'btn btn-outline-info btn-sm btn_spacer'
 
           .form_spacer
           .row
