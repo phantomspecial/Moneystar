@@ -17,6 +17,8 @@ class CsvIncludesController < MastersController
 
   def file_validate
     return redirect(3) if params[:file].nil?
+    p params[:file]
+    p params[:file].content_type
     redirect(4) unless params[:file].content_type == 'text/csv'
   end
 
