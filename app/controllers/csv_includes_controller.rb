@@ -26,7 +26,8 @@ class CsvIncludesController < MastersController
             3 => { danger: 'ファイルが選択されていません。'},
             4 => { danger: '選択されたファイルは適正な形式ではありません。' },
             5 => { danger: 'SQL挿入エラーです。' },
-            6 => { danger: '内部エラーです。' }
+            6 => { danger: '存在しない科目があります。科目の追加・修正を行ってください。' },
+            9 => { danger: '内部エラーです。' }
           }
 
     redirect_to reading_csv_includes_path, msg[msg_code]

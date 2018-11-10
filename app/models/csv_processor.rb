@@ -89,6 +89,10 @@ class CsvProcessor
 
     cat_hash = Category.all.pluck(:name, :uuid).to_h.freeze
 
+    # Validation
+    csv_category_array = file_data.map { |i| i[4] }.uniq
+    return 6 if (csv_category_array - cat_hash.keys).present?
+
     file_data.each do |r|
       r[0] = r[0].to_i
       r[1] = r[1].to_i
@@ -98,7 +102,7 @@ class CsvProcessor
       r[5] = r[5].delete(',').to_i
     end
 
-    # Validations
+    # Validation
     flg = false
     file_data.each do |r|
       flg = r.any? { |i| i.nil? }
@@ -110,8 +114,8 @@ class CsvProcessor
     ActiveRecord::Base.transaction do
       1.upto (max_id) do |i|
         r_data = file_data.select { |r| r[0] == i }
-        ins_kari_ar = r_data.select { |r| r[3] == 1 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
-        ins_kasi_ar = r_data.select { |r| r[3] == 2 }.map { |i| [i[4], i[3], i[5], Time.zone.local(Time.now.year, i[1],i[2])] }
+        ins_kari_ar = r_data.select { |r| r[3] == 1 }.map { |d| [d[4], d[3], d[5], Time.zone.local(Time.now.year, d[1],d[2])] }
+        ins_kasi_ar = r_data.select { |r| r[3] == 2 }.map { |d| [d[4], d[3], d[5], Time.zone.local(Time.now.year, d[1],d[2])] }
 
         journal = Journal.create(kogaki: r_data[0][6], created_at: Time.zone.local(Time.now.year, r_data[0][1], r_data[0][2]))
 
