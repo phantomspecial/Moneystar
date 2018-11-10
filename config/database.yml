@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: moneystar_production
-  username: moneystar
+  username: root
   password: <%= ENV['MONEYSTAR_DATABASE_PASSWORD'] %>
