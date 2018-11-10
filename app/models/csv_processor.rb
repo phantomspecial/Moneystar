@@ -91,6 +91,8 @@ class CsvProcessor
 
     # Validation
     csv_category_array = file_data.map { |i| i[4] }.uniq
+    return 4 if csv_category_array.blank?
+    return 7 if cat_hash.keys.blank?
     return 6 if (csv_category_array - cat_hash.keys).present?
 
     file_data.each do |r|

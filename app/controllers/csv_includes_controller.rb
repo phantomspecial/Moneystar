@@ -27,6 +27,7 @@ class CsvIncludesController < MastersController
             4 => { danger: '選択されたファイルは適正な形式ではありません。' },
             5 => { danger: 'SQL挿入エラーです。' },
             6 => { danger: '存在しない科目があります。科目の追加・修正を行ってください。' },
+            7 => { danger: '科目がありません。科目を作成/CSV挿入処理を行ってください。' },
             9 => { danger: '内部エラーです。' }
           }
 
