@@ -9,7 +9,7 @@
 
 server '54.92.25.112', user: 'root', roles: %w{app db web}
 
-set :ssh_options, keys: '~/.ssh/moneystar_key_rsa'
+set :ssh_options, keys: '~/.ssh/moneystar_root_key_rsa'
 
 # role-based syntax
 # ==================
