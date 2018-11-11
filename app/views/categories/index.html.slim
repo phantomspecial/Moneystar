@@ -3,7 +3,10 @@
     = render 'shared/left_pane'
   .right
     .wrapper
-      h5 勘定科目一覧
+      .category_top_wrapper
+        h5 勘定科目一覧
+        .new_category_link.float-lg-right
+          = link_to '新規科目作成', new_category_path, class: 'btn btn-primary'
       table.table.table-hover.table-sm.table-bordered.table-width
         thead.thead-dark.text-center
           tr
@@ -11,10 +14,12 @@
             th UUID
             th 科目名
             th CF区分
+            th Link
         tbody
           - @categories.each do |category|
             tr
               td = category.sub_category.cat_name
-              td = category.name
               td = category.uuid
+              td = category.name
               td = category.cf_category.cat_name
+              td = link_to '編集', edit_category_path(category.id)

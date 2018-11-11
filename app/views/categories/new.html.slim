@@ -1,0 +1,40 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      h5 勘定科目追加
+      .error_field
+        - if @category.errors.any?
+          - @category.errors.full_messages.each do |msg|
+            = msg
+      = form_for @category, url: categories_path do |f|
+        .form-group
+          .row
+            .col-md-3
+              = f.label :top_category_id
+            .col-md-9
+              = f.select :top_category_id, TopCategory.all.pluck(:cat_name, :id), { value: @category.top_category_id }, { class: 'form-control' }
+          .row
+            .col-md-3
+              = f.label :sub_category_id
+            .col-md-9
+              = f.select :sub_category_id, SubCategory.all.pluck(:cat_name, :id), {}, {class: 'form-control'}
+          .row
+            .col-md-3
+              = f.label :cf_category_id
+            .col-md-9
+              = f.select :cf_category_id, CfCategory.all.pluck(:cat_name, :id), {}, { class: 'form-control' }
+          .row
+            .col-md-3
+              = f.label :uuid
+            .col-md-9
+              = f.text_field :uuid, minlength: 4, maxlength: 4, class: 'form-control'
+          .row
+            .col-md-3
+              = f.label :name
+            .col-md-9
+              = f.text_field :name, class: 'form-control'
+          .row
+            .col-md-4
+              = f.submit value: '作成', data: {confirm: '内容を確認して、間違いがなければOKボタンを押してください。'}, class: 'btn btn-primary'

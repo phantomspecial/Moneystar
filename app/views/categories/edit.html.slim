@@ -1,0 +1,20 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      h5 科目名編集
+      .error_field
+        - if @category.errors.any?
+          - @category.errors.full_messages.each do |msg|
+            = msg
+      = form_for @category, url: category_path(@category.id) do |f|
+        .form-group
+          .row
+            .col-md-3
+              = f.label :name
+            .col-md-9
+              = f.text_field :name, value: @category.name, class: 'form-control'
+          .row
+            .col-md-4
+              = f.submit value: '更新', data: {confirm: '内容を確認して、間違いがなければOKボタンを押してください。'}, class: 'btn btn-primary'
