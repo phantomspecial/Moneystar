@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180722075308) do
+ActiveRecord::Schema.define(version: 20181111160644) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "top_category_id", null: false
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20180722075308) do
     t.integer "o_cf", comment: "営業CF"
     t.integer "i_cf", comment: "投資CF"
     t.integer "f_cf", comment: "投資CF"
-    t.integer "accum_fcf", comment: "累積FCF"
+    t.integer "accum_fcf"
     t.integer "deposit_cash", comment: "入金額"
     t.integer "payment_cash", comment: "出金額"
     t.integer "super_total_cash", comment: "総合計資金"
