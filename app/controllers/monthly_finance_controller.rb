@@ -21,7 +21,7 @@ class MonthlyFinanceController < MastersController
 
     # 各月CFグラフ
     gon.cf_graph_free_cf = @monthly_finance.pluck(:free_cf)
-    gon.cf_graph_accum_cf = @monthly_finance.pluck(:accum_cf)
+    gon.cf_graph_accum_cf = @monthly_finance.pluck(:accum_fcf)
     gon.cf_graph_o_cf = @monthly_finance.pluck(:o_cf)
     gon.cf_graph_i_cf = @monthly_finance.pluck(:i_cf)
     gon.cf_graph_f_cf = @monthly_finance.pluck(:f_cf)
