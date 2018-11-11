@@ -134,7 +134,7 @@ module MastersHelper
 
   def estimate_hash(flg)
     result = {}
-    [5102, 5204, 5211, 5215, 5303, 5202, 5302].each do |uuid|
+    Estimate.where('uuid > ?', 5000).pluck(:uuid).each do |uuid|
       result[@categories.find_by(uuid: uuid).name] = estimate_total(uuid, flg)
     end
     # 主要変動費合計
@@ -160,37 +160,39 @@ module MastersHelper
     weekday, day_off, st_to_current_days = day_category_counts(start_date)
     st_to_end_days = (end_date.to_date - start_date.to_date).to_i + 1
 
+    cm_t = 0
+    progress_estimate = 0
+
     if [5204, 5303, 5211, 5210, 5203, 5214].include?(uuid)
-      m_est = Estimate.find_by(uuid: uuid).m_est
-      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      m_est = Estimate.find_by(uuid: uuid)&.m_est
+      progress_estimate = m_est * st_to_current_days / st_to_end_days if m_est.present?
       cm_t = category_range_total(uuid, 1, start_date, end_date)
-
     elsif uuid == 5102
-      m_est = Estimate.find_by(uuid: uuid).m_est
-      progress_estimate = weekday * 1140 + day_off * 760
+      m_est = Estimate.find_by(uuid: uuid)&.m_est
+      progress_estimate = weekday * 1140 + day_off * 760 if m_est.present?
       cm_t = category_range_total(uuid, 1, start_date, end_date)
-
     elsif uuid == 4102
-      m_est = Estimate.find_by(uuid: uuid).m_est
-      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      m_est = Estimate.find_by(uuid: uuid)&.m_est
+      progress_estimate = m_est * st_to_current_days / st_to_end_days if m_est
       cm_t = category_range_total(uuid, 2, start_date, end_date)
-
     elsif uuid == 5302
       m_est = Estimate.where(uuid: uuid)
-      m_est = Time.zone.now.month.even? ? m_est.first.m_est : m_est.second.m_est
-      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      if m_est.present?
+        m_est = Time.zone.now.month.even? ? m_est.first&.m_est : m_est.second&.m_est
+        progress_estimate = m_est * st_to_current_days / st_to_end_days
+      end
       cm_t = category_range_total(uuid, 1, start_date, end_date)
     elsif uuid == 2202
-      m_est = Estimate.find_by(uuid: uuid).m_est
-      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      m_est = Estimate.find_by(uuid: uuid)&.m_est
+      progress_estimate = m_est * st_to_current_days / st_to_end_days if m_est.present?
       cm_t = category_range_total(uuid, 2, start_date, end_date)
-
     elsif uuid == 5205
       m_est = Estimate.where(uuid: uuid)
-      m_est = Time.zone.now.month.even? ? m_est.second.m_est : m_est.first.m_est
-      progress_estimate = m_est * st_to_current_days / st_to_end_days
+      if m_est.present?
+        m_est = Time.zone.now.month.even? ? m_est.second&.m_est : m_est.first&.m_est
+        progress_estimate = m_est * st_to_current_days / st_to_end_days
+      end
       cm_t = category_range_total(uuid, 1, start_date, end_date)
-
     else
       return [0, 0, category_range_total(uuid, 1, start_date, end_date), 0, 0 - category_range_total(uuid, 1, start_date, end_date)]
     end
