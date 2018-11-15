@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181111160644) do
+ActiveRecord::Schema.define(version: 20181114141000) do
+
+  create_table "budgets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "uuid", comment: "UUID"
+    t.integer "budget_typ", comment: "予算タイプ"
+    t.integer "monthly_budget", comment: "定額予算月額"
+    t.integer "daily_budget", comment: "定額予算日額"
+    t.integer "weekday_budget", comment: "平日予算日額"
+    t.integer "holiday_budget", comment: "土日予算日額"
+    t.integer "even_month_budget", comment: "偶数月予算月額"
+    t.integer "odd_month_budget", comment: "奇数月予算月額"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "top_category_id", null: false
@@ -27,16 +40,6 @@ ActiveRecord::Schema.define(version: 20181111160644) do
 
   create_table "cf_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cat_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "estimates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "uuid", null: false
-    t.integer "m_est", null: false
-    t.string "cost_cat", null: false
-    t.text "memo1"
-    t.text "memo2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -3,6 +3,7 @@ class Category < ApplicationRecord
   belongs_to :sub_category
   belongs_to :cf_category
   has_many :journal_details
+  has_one :budget, foreign_key: :uuid
 
   validates :top_category_id, :sub_category_id, :cf_category_id, :uuid, :name, presence: true
   validates :top_category_id, inclusion: { in: TopCategory.all.pluck(:id),

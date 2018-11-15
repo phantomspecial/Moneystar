@@ -1,2 +1,0 @@
-class Estimate < ApplicationRecord
-end
