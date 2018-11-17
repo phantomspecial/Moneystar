@@ -47,11 +47,11 @@
             th 進捗予算比
             th 過不足額
         tbody
-          - estimate_hash('month').each do |row|
+          - budget_hash('month').each do |row|
             tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
               td = row.first
-              - row.second.each do |r|
-                td.text-right = digit_sep(r)
+              - row.second.each_value do |v|
+                td.text-right = digit_sep(v)
         thead.thead-light
           tr.text-right
             - total_balance_overview('month').each do |row|
@@ -73,11 +73,11 @@
             th 進捗予算比
             th 過不足額
         tbody
-          - estimate_hash('payday').each do |row|
+          - budget_hash('payday').each do |row|
             tr class="#{'table-warning' if %w(食費 管理対象費用合計).include?(row.first)}"
               td = row.first
-              - row.second.each do |r|
-                td.text-right = digit_sep(r)
+              - row.second.each_value do |v|
+                td.text-right = digit_sep(v)
         thead.thead-light
           tr.text-right
             - total_balance_overview('payday').each do |row|

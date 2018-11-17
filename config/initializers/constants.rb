@@ -1,0 +1,10 @@
+module Constants
+  BEGINNING_OF_YEAR = 1
+  BEGINNING_OF_NENDO = 4
+  PAYDAY = 15
+
+  DEBIT_SIDE = 1
+  CREDIT_SIDE = 2
+
+  CURRENT_NENDO = 2018
+end
