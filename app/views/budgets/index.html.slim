@@ -1,45 +1,37 @@
 .top_container
-  .col-md-10.mx-auto.justify-content-center
-    .top
-      .title
-        h5 予算設定一覧
-    .btn-grp
-      = link_to '新規予算設定', new_budget_path, class: 'btn btn-primary'
-    table.table.table-hover.table-sm.table-bordered
-      thead
-        tr
-          th 科目名
-          th 予算タイプ
-          th 定額予算月額
-          th 定額予算日額
-          th 平日予算日額
-          th 土日予算日額
-          th 偶数月予算月額
-          th 奇数月予算月額
-          th 当月予算
-          th 進捗予算
-          th 実行額
-          th 進捗予算比
-          th 差額
-          th Edit
-          th Destroy
-      tbody
-        - @budgets.each do |bd|
-          - act_val = 30000
-          - estimate_calc = bd.monthly_progress_estimate(bd.id, act_val)
-          tr
-            td = bd.category.name
-            td = bd.budget_typ
-            td = bd.monthly_budget
-            td = bd.daily_budget
-            td = bd.weekday_budget
-            td = bd.holiday_budget
-            td = bd.even_month_budget
-            td = bd.odd_month_budget
-            td = estimate_calc[:monthly_estimate_amt]
-            td = estimate_calc[:progress_estimate_amt]
-            td = act_val
-            td = estimate_calc[:estimate_ratio]
-            td = estimate_calc[:devide]
-            td = link_to '編集', edit_budget_path(bd.id)
-            td = link_to '削除', budget_path(bd.id), method: :delete
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      .mx-auto.justify-content-center
+        .top
+          .title
+            h5 予算設定一覧
+        .btn-grp
+          = link_to '新規予算設定', new_budget_path, class: 'btn btn-primary'
+        table.table.table-hover.table-sm.table-bordered
+          thead
+            tr
+              th 科目名
+              th 予算タイプ
+              th 定額予算月額
+              th 定額予算日額
+              th 平日予算日額
+              th 土日予算日額
+              th 偶数月予算月額
+              th 奇数月予算月額
+              th 編集
+              th 削除
+          tbody
+            - @budgets.each do |bd|
+              tr
+                td = bd.category.name
+                td = bd.budget_typ
+                td = bd.monthly_budget
+                td = bd.daily_budget
+                td = bd.weekday_budget
+                td = bd.holiday_budget
+                td = bd.even_month_budget
+                td = bd.odd_month_budget
+                td = link_to '編集', edit_budget_path(bd.id)
+                td = link_to '削除', budget_path(bd.id), method: :delete
