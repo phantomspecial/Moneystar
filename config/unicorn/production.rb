@@ -16,7 +16,9 @@ pid $pid
 # loading booster
 preload_app true
 # before starting processes
+current_dir = "<PRJ_ROOT>/current"
 before_fork do |server, worker|
+  ENV['BUNDLE_GEMFILE'] = File.expand_path('Gemfile', current_dir)
   defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
   old_pid = "#{server.config[:pid]}.oldbin"
   if old_pid != server.pid
