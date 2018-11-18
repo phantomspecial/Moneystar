@@ -73,7 +73,7 @@ class Category < ApplicationRecord
 
   def self.last_month_diff(start_date, end_date)
     # 先月末差(VISA)
-    last_month_available_cash - total_cash(start_date, end_date)
+    total_cash(start_date, end_date) - last_month_available_cash
   end
 
   def self.super_total_cash(start_date, end_date)
