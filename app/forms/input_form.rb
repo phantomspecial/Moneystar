@@ -5,7 +5,6 @@ class InputForm
                  :kasi_ka1, :kasi_ki1, :kasi_ka2, :kasi_ki2, :kasi_ka3, :kasi_ki3, :kasi_ka4, :kasi_ki4, :kasi_ka5, :kasi_ki5,
                  :kogaki
 
-  PERMIT_CAT_UUIDS = Category.pluck(:uuid).push('').map(&:to_s).freeze
   AMOUNT_REGEX = /\A\d+\z/
   FIRST_AMOUNT_PATTERN = [*1..9].map(&:to_s).freeze
 
@@ -55,7 +54,7 @@ class InputForm
 
   def parameter_chk
     # 科目名
-    errors.add(:category, 'に不正な文字があります。') if ([kari_ka1, kari_ka2, kari_ka3, kari_ka4, kari_ka5, kasi_ka1, kasi_ka2, kasi_ka3, kasi_ka4, kasi_ka5] - PERMIT_CAT_UUIDS).present?
+    errors.add(:category, 'に不正な文字があります。') if ([kari_ka1, kari_ka2, kari_ka3, kari_ka4, kari_ka5, kasi_ka1, kasi_ka2, kasi_ka3, kasi_ka4, kasi_ka5] - Category.pluck(:uuid).push('').map(&:to_s)).present?
 
     # 金額
     amt_arr = [kari_ki1, kari_ki2, kari_ki3, kari_ki4, kari_ki5, kasi_ki1, kasi_ki2, kasi_ki3, kasi_ki4, kasi_ki5].reject(&:blank?).map { |i| i.delete(',') }
