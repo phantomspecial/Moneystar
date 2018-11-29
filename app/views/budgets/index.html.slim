@@ -14,6 +14,7 @@
             tr
               th 科目名
               th 予算タイプ
+              th 予算設定
               th 定額予算月額
               th 定額予算日額
               th 平日予算日額
@@ -27,6 +28,7 @@
               tr
                 td = bd.category.name
                 td = bd.budget_typ
+                td = bd.budget_division
                 td = bd.monthly_budget
                 td = bd.daily_budget
                 td = bd.weekday_budget

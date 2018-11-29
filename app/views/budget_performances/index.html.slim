@@ -1,0 +1,34 @@
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      table.table.table-sm.table-bordered
+        thead.thead-dark
+          tr.text-center
+            th = progress_remain_days('month')
+      h5 予実損益計算書
+      table.table.table-hover.table-sm.table-bordered
+        thead.thead-dark
+          tr.text-center
+            - BudgetPerformance::PROFIT_AND_LOSS_HEADER.each do |h|
+              th = h
+        tbody
+          - @pl.each do |row|
+            tr class="#{'table-secondary' if /小計|合計/ =~ row[:category]}"
+              - row.each do |k, v|
+                td class="#{'text-right' unless %i(division section category).include?(k) }"
+                  = digit_sep(v)
+
+      h5 予実収支計算書
+      table.table.table-hover.table-sm.table-bordered
+        thead.thead-dark
+          tr.text-center
+            - BudgetPerformance::INCOME_AND_EXPENDITURE_HEADER.each do |h|
+              th = h
+        tbody
+          - @ie.each do |row|
+            tr class="#{'table-secondary' if /小計|合計/ =~ row[:category]}"
+              - row.each do |k, v|
+                td class="#{'text-right' unless %i(division section category).include?(k) }"
+                  = digit_sep(v)

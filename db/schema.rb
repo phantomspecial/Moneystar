@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181114141000) do
+ActiveRecord::Schema.define(version: 20181129080108) do
 
   create_table "budgets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "uuid", comment: "UUID"
     t.integer "budget_typ", comment: "予算タイプ"
+    t.integer "budget_division"
     t.integer "monthly_budget", comment: "定額予算月額"
     t.integer "daily_budget", comment: "定額予算日額"
     t.integer "weekday_budget", comment: "平日予算日額"
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20181114141000) do
     t.bigint "cf_category_id", null: false
     t.integer "uuid", null: false
     t.string "name", null: false
+    t.boolean "core_business_flg", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cf_category_id"], name: "index_categories_on_cf_category_id"

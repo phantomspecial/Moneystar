@@ -38,6 +38,7 @@ class BudgetsController < MastersController
   def budget_params
     params.require(:budget).permit(:uuid,
                                    :budget_typ,
+                                   :budget_division,
                                    :monthly_budget,
                                    :daily_budget,
                                    :weekday_budget,

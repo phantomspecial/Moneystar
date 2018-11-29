@@ -18,9 +18,21 @@ class Category < ApplicationRecord
   validates :name, exclusion: { in: Category.all.pluck(:name), message: 'はすでに存在します。' }, on: :create
   validate :uuid_configuration_check, on: :create
 
+  scope :non_cash, -> { where.not(cf_category_id: CfCategory::CASHS) }
+
   # Constants
   SBI_UUID = 1601
   VISA_UTIL_UUIDS = [2106, 2107]
+
+  def self.default_division(uuid)
+    # 与えられたUUIDの標準の残高が借方か、貸方かを判定する。
+    top_id = Category.find_by(uuid: uuid).top_category_id
+    if top_id == 1 || top_id == 5
+      Constants::DEBIT_SIDE
+    else
+      Constants::CREDIT_SIDE
+    end
+  end
 
   def self.top_category_range_total(top_category_id, default_division, start_date, end_date)
     # 与えられたTopCategoryIDに紐づく科目の、start_dateからend_dateまでの間の残高を求める
