@@ -2,13 +2,16 @@ class Budget < ApplicationRecord
   belongs_to :category, foreign_key: :uuid
 
   enum budget_typ: { 定額予算日額: 1, 定額予算月額: 2, 曜日区分別日額: 3, 隔月予算月額: 4 }
+  enum budget_division: { 借方残高増加予算: 1, 貸方残高増加予算: 2 }
 
   BUDGET_TYP = %w(定額予算日額 定額予算月額 曜日区分別日額 隔月予算月額).freeze
+  BUDGET_DIVISION = %w(借方残高増加予算 貸方残高増加予算).freeze
 
   # Validates
-  validates :uuid, :budget_typ, presence: true
+  validates :uuid, :budget_typ, :budget_division, presence: true
   validates :uuid, inclusion: { in: Category.all.pluck(:uuid) }
   validates :budget_typ, inclusion: { in: BUDGET_TYP }
+  validates :budget_division, inclusion: { in: BUDGET_DIVISION }
   validates :monthly_budget, presence: true, if: Proc.new { |v| v.budget_typ == '定額予算月額' }
   validates :daily_budget, presence: true, if: Proc.new { |v| v.budget_typ == '定額予算日額' }
   validates :weekday_budget, :holiday_budget, presence: true, if: Proc.new { |v| v.budget_typ == '曜日区分別日額' }
@@ -34,30 +37,30 @@ class Budget < ApplicationRecord
 
     current_value = current_value(uuid, start_date, end_date)
 
+    return { monthly_estimate_amt: 0, progress_estimate_amt: 0, current_value: current_value, estimate_ratio: 0, devide: 0 } if budget.nil?
+
     case budget.budget_typ
     when '定額予算日額'
       daily_budget = budget.daily_budget
       monthly_estimate_amt = daily_budget * to_eor_st_to_end_days
       progress_estimate_amt = daily_budget * to_cnt_st_to_current_days
       estimate_ratio = percent(current_value, progress_estimate_amt)
-      devide = progress_estimate_amt - current_value
 
       { monthly_estimate_amt: monthly_estimate_amt,
         progress_estimate_amt: progress_estimate_amt,
         current_value: current_value,
         estimate_ratio: estimate_ratio,
-        devide: devide
+        devide: devide(uuid, progress_estimate_amt, current_value)
       }
     when '定額予算月額'
       monthly_budget = budget.monthly_budget
       estimate_ratio = percent(current_value, monthly_budget)
-      devide = monthly_budget - current_value
 
       { monthly_estimate_amt: monthly_budget,
         progress_estimate_amt: monthly_budget,
         current_value: current_value,
         estimate_ratio: estimate_ratio,
-        devide: devide
+        devide: devide(uuid, monthly_budget, current_value)
       }
     when '曜日区分別日額'
       weekday_budget = budget.weekday_budget
@@ -67,13 +70,12 @@ class Budget < ApplicationRecord
       progress_estimate_amt = to_cnt_weekday * weekday_budget + to_cnt_day_off * holiday_budget
 
       estimate_ratio = percent(current_value, progress_estimate_amt)
-      devide = progress_estimate_amt - current_value
 
       { monthly_estimate_amt: monthly_estimate_amt,
         progress_estimate_amt: progress_estimate_amt,
         current_value: current_value,
         estimate_ratio: estimate_ratio,
-        devide: devide
+        devide: devide(uuid, progress_estimate_amt, current_value)
       }
     when '隔月予算月額'
       even_month_budget = budget.even_month_budget
@@ -81,13 +83,12 @@ class Budget < ApplicationRecord
 
       current_month_estimate = Time.current.month.odd? ? odd_month_budget : even_month_budget
       estimate_ratio = percent(current_value, current_month_estimate)
-      devide = current_month_estimate - current_value
 
       { monthly_estimate_amt: current_month_estimate,
         progress_estimate_amt: current_month_estimate,
         current_value: current_value,
         estimate_ratio: estimate_ratio,
-        devide: devide
+        devide: devide(uuid, current_month_estimate, current_value)
       }
     end
   end
@@ -142,5 +143,13 @@ class Budget < ApplicationRecord
       side = Constants::CREDIT_SIDE
     end
     Ledger.category_range_total(uuid, side, start_date, end_date)
+  end
+
+  def devide(uuid, progress_estimate, current_value)
+    if Category.default_division(uuid) == 1
+      progress_estimate - current_value
+    else
+      current_value - progress_estimate
+    end
   end
 end

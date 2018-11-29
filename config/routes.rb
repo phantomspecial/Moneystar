@@ -36,4 +36,6 @@ Rails.application.routes.draw do
   resources :monthly_finance, only: [:index]
 
   resources :budgets
+
+  resources :budget_performances, only: :index
 end

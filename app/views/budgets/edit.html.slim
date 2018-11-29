@@ -18,6 +18,11 @@
           = f.select :budget_typ, Budget::BUDGET_TYP, { include_blank: true }, { id: :budget_typ, class: 'form-control' }
       .row
         .col-md-3
+          = f.label :budget_division
+        .col-md-9
+          = f.select :budget_division, Budget::BUDGET_DIVISION, { include_blank: true }, { id: :budget_division, class: 'form-control' }
+      .row
+        .col-md-3
           = f.label :monthly_budget
         .col-md-9
           = f.text_field :monthly_budget, class: 'form-control', id: :monthly_budget, disabled: true
