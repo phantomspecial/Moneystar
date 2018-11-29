@@ -1,56 +1,61 @@
-#budget_new.form-group
-  .error_field
-    - if @budget.errors.any?
-      - @budget.errors.full_messages.each do |msg|
-        = msg
+.top_container
+  .left
+    = render 'shared/left_pane'
+  .right
+    .wrapper
+      #budget_new.form-group
+        .error_field
+          - if @budget.errors.any?
+            - @budget.errors.full_messages.each do |msg|
+              = msg
 
-  = form_for @budget, url: budget_path, method: :patch do |f|
-    .col-md-10
-      .row
-        .col-md-3
-          = f.label :uuid
-        .col-md-9
-          = f.grouped_collection_select :uuid, SubCategory.all, :categories, :cat_name, :uuid, :name, { value: @budget.uuid, include_blank: true }, { class: 'form-control' }
-      .row
-        .col-md-3
-          = f.label :budget_typ
-        .col-md-9
-          = f.select :budget_typ, Budget::BUDGET_TYP, { include_blank: true }, { id: :budget_typ, class: 'form-control' }
-      .row
-        .col-md-3
-          = f.label :budget_division
-        .col-md-9
-          = f.select :budget_division, Budget::BUDGET_DIVISION, { include_blank: true }, { id: :budget_division, class: 'form-control' }
-      .row
-        .col-md-3
-          = f.label :monthly_budget
-        .col-md-9
-          = f.text_field :monthly_budget, class: 'form-control', id: :monthly_budget, disabled: true
-      .row
-        .col-md-3
-          = f.label :daily_budget
-        .col-md-9
-          = f.text_field :daily_budget, class: 'form-control', id: :daily_budget, disabled: true
-      .row
-        .col-md-3
-          = f.label :weekday_budget
-        .col-md-9
-          = f.text_field :weekday_budget, class: 'form-control', id: :weekday_budget, disabled: true
-      .row
-        .col-md-3
-          = f.label :holiday_budget
-        .col-md-9
-          = f.text_field :holiday_budget, class: 'form-control', id: :holiday_budget, disabled: true
-      .row
-        .col-md-3
-          = f.label :even_month_budget
-        .col-md-9
-          = f.text_field :even_month_budget, class: 'form-control', id: :even_month_budget, disabled: true
-      .row
-        .col-md-3
-          = f.label :odd_month_budget
-        .col-md-9
-          = f.text_field :odd_month_budget, class: 'form-control', id: :odd_month_budget, disabled: true
-      .row
-        .col-md-4
-          = f.submit '作成', data: { confirm: '内容を確認し、問題がなければOKボタンを押してください。' }, class: 'btn btn-primary'
+        = form_for @budget, url: budget_path, method: :patch do |f|
+          .col-md-10
+            .row
+              .col-md-3
+                = f.label :uuid
+              .col-md-9
+                = f.grouped_collection_select :uuid, SubCategory.all, :categories, :cat_name, :uuid, :name, { value: @budget.uuid, include_blank: true }, { class: 'form-control' }
+            .row
+              .col-md-3
+                = f.label :budget_typ
+              .col-md-9
+                = f.select :budget_typ, Budget::BUDGET_TYP, { include_blank: true }, { id: :budget_typ, class: 'form-control' }
+            .row
+              .col-md-3
+                = f.label :budget_division
+              .col-md-9
+                = f.select :budget_division, Budget::BUDGET_DIVISION, { include_blank: true }, { id: :budget_division, class: 'form-control' }
+            .row
+              .col-md-3
+                = f.label :monthly_budget
+              .col-md-9
+                = f.text_field :monthly_budget, class: 'form-control', id: :monthly_budget, disabled: true
+            .row
+              .col-md-3
+                = f.label :daily_budget
+              .col-md-9
+                = f.text_field :daily_budget, class: 'form-control', id: :daily_budget, disabled: true
+            .row
+              .col-md-3
+                = f.label :weekday_budget
+              .col-md-9
+                = f.text_field :weekday_budget, class: 'form-control', id: :weekday_budget, disabled: true
+            .row
+              .col-md-3
+                = f.label :holiday_budget
+              .col-md-9
+                = f.text_field :holiday_budget, class: 'form-control', id: :holiday_budget, disabled: true
+            .row
+              .col-md-3
+                = f.label :even_month_budget
+              .col-md-9
+                = f.text_field :even_month_budget, class: 'form-control', id: :even_month_budget, disabled: true
+            .row
+              .col-md-3
+                = f.label :odd_month_budget
+              .col-md-9
+                = f.text_field :odd_month_budget, class: 'form-control', id: :odd_month_budget, disabled: true
+            .row
+              .col-md-4
+                = f.submit '作成', data: { confirm: '内容を確認し、問題がなければOKボタンを押してください。' }, class: 'btn btn-primary'

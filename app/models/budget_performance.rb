@@ -31,11 +31,10 @@ class BudgetPerformance
             cv_total += budget_data[:current_value]
           end
 
+          ratio = pb_total.positive? ? percent(cv_total, pb_total) : 0
           if ratio_devide_maker(division) == Constants::DEBIT_SIDE
-            ratio = percent(cv_total, pb_total) if pb_total.positive?
             devide = pb_total - cv_total
           else
-            ratio = percent(pb_total, cv_total) if cv_total.positive?
             devide = cv_total - pb_total
           end
 
