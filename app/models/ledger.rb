@@ -1,10 +1,10 @@
 class Ledger < ApplicationRecord
   belongs_to :journal, optional: true
 
-  def self.category_range_total(uuid, default_division, start_date, end_date)
+  def self.category_range_total(uuid, start_date, end_date)
     # 与えられたUUIDを持つ科目の、start_dateからend_dateの前日までの間の残高を求める
     dr_t, cr_t = category_range_raw_total(uuid, start_date, end_date)
-    default_division == Constants::DEBIT_SIDE ? dr_t - cr_t : cr_t - dr_t
+    Category.division?(uuid) ? dr_t - cr_t : cr_t - dr_t
   end
 
   def self.category_range_raw_total(uuid, start_date, end_date)

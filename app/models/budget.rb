@@ -144,16 +144,11 @@ class Budget < ApplicationRecord
   end
 
   def current_value(uuid, start_date, end_date)
-    if Category.find_by(uuid: uuid).top_category_id == 5
-      side = Constants::DEBIT_SIDE
-    else
-      side = Constants::CREDIT_SIDE
-    end
-    Ledger.category_range_total(uuid, side, start_date, end_date)
+    Ledger.category_range_total(uuid, start_date, end_date)
   end
 
   def devide(uuid, progress_estimate, current_value)
-    ddv = (Category.default_division(uuid) == 1 || Category.default_division(uuid) == 5)? true : false
+    ddv = Category.division?(uuid)
     bd = Budget.find_by(uuid: uuid)&.budget_division == '借方残高増加予算' ? true : false
     (bd || ddv) ? progress_estimate - current_value : current_value - progress_estimate
   end

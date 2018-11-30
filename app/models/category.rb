@@ -9,6 +9,7 @@ class Category < ApplicationRecord
   CORE_BUSINESS_FLG = %w(本業 本業外).freeze
 
   enum core_business_flg: { 本業: true, 本業外: false }
+  enum default_division: { 借方: true, 貸方: false }
 
   validates :top_category_id, :sub_category_id, :cf_category_id, :uuid, :name, presence: true
   validates :top_category_id, inclusion: { in: TopCategory.all.pluck(:id),
@@ -28,51 +29,45 @@ class Category < ApplicationRecord
   SBI_UUID = 1601
   VISA_UTIL_UUIDS = [2106, 2107]
 
-  def self.default_division(uuid)
-    # 与えられたUUIDの標準の残高が借方か、貸方かを判定する。
-    top_id = Category.find_by(uuid: uuid).top_category_id
-    if top_id == 1 || top_id == 5
-      Constants::DEBIT_SIDE
-    else
-      Constants::CREDIT_SIDE
-    end
+  def self.division?(uuid)
+    (Category.find_by(uuid: uuid).default_division_before_type_cast == Constants::DEBIT_SIDE) ? true : false
   end
 
-  def self.top_category_range_total(top_category_id, default_division, start_date, end_date)
+  def self.top_category_range_total(top_category_id, start_date, end_date)
     # 与えられたTopCategoryIDに紐づく科目の、start_dateからend_dateまでの間の残高を求める
     uuids = Category.where('top_category_id = ?', top_category_id).pluck(:uuid)
     total = 0
 
     uuids.each do |uuid|
-      total += Ledger.category_range_total(uuid, default_division, start_date, end_date)
+      total += Ledger.category_range_total(uuid, start_date, end_date)
     end
     total
   end
 
-  def self.sub_category_range_total(sub_category_id, default_division, start_date, end_date)
+  def self.sub_category_range_total(sub_category_id, start_date, end_date)
     # 与えられたSubCategoryIDに紐づく科目の、start_dateからend_dateまでの間の残高を求める
     uuids = Category.where('sub_category_id = ?', sub_category_id).pluck(:uuid)
     total = 0
 
     uuids.each do |uuid|
-      total += Ledger.category_range_total(uuid, default_division, start_date, end_date)
+      total += Ledger.category_range_total(uuid, start_date, end_date)
     end
     total
   end
 
-  def self.cf_category_range_total(cf_category_id, default_division, start_date, end_date)
+  def self.cf_category_range_total(cf_category_id, start_date, end_date)
     # 与えられたCFCategoryIDに紐づく科目の、start_dateからend_dateまでの間の残高を求める
     uuids = Category.where('cf_category_id = ?', cf_category_id).pluck(:uuid)
     total = 0
 
     uuids.each do |uuid|
-      total += Ledger.category_range_total(uuid, default_division, start_date, end_date)
+      total += Ledger.category_range_total(uuid, start_date, end_date)
     end
     total
   end
 
   def self.total_cash(start_date, end_date)
-    cf_category_range_total(CfCategory::CASHS, Constants::DEBIT_SIDE, start_date, end_date)
+    cf_category_range_total(CfCategory::CASHS, start_date, end_date)
   end
 
   def self.range_cash(start_date, end_date)
@@ -94,13 +89,13 @@ class Category < ApplicationRecord
 
   def self.super_total_cash(start_date, end_date)
     # 総合計資金
-    total_cash(start_date, end_date) + Ledger.category_range_total(SBI_UUID, Constants::DEBIT_SIDE, start_date, end_date)
+    total_cash(start_date, end_date) + Ledger.category_range_total(SBI_UUID, start_date, end_date)
   end
 
   def self.range_pl(start_date, end_date)
     # 期間損益 => 収益 - 費用
-    profit = top_category_range_total(4, Constants::CREDIT_SIDE, start_date, end_date)
-    loss = top_category_range_total(5, Constants::CREDIT_SIDE, start_date, end_date)
+    profit = top_category_range_total(4, start_date, end_date)
+    loss = top_category_range_total(5, start_date, end_date)
     profit - loss
   end
 
@@ -109,7 +104,7 @@ class Category < ApplicationRecord
   def self.visa_utils(start_date, end_date)
     visa_util = 0
     VISA_UTIL_UUIDS.each do |uuid|
-      visa_util += Ledger.category_range_total(uuid, Constants::CREDIT_SIDE, start_date, end_date)
+      visa_util += Ledger.category_range_total(uuid, start_date, end_date)
     end
     visa_util
   end
