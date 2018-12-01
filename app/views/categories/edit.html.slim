@@ -16,5 +16,10 @@
             .col-md-9
               = f.text_field :name, value: @category.name, class: 'form-control'
           .row
+            .col-md-3
+              = f.label :core_business_flg
+            .col-md-9
+              = f.select :core_business_flg, @category.class::CORE_BUSINESS_FLG, {}, {class: 'form-control'}
+          .row
             .col-md-4
               = f.submit value: '更新', data: {confirm: '内容を確認して、間違いがなければOKボタンを押してください。'}, class: 'btn btn-primary'
