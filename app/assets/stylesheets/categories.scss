@@ -1,4 +1,22 @@
-.new_category_link {
-  margin-top: -40px;
-  padding-bottom: 10px;
+// SP
+@media screen and(max-width: 479px) {
+  .category_top_wrapper {
+    height: 50px;
+    margin-top: 10px;
+    display: flex;
+    .new_category_link {
+      padding-left: 100px;
+    }
+  }
+  .category_sp_table {
+    zoom: 70%;
+  }
+}
+
+// PC
+@media screen and(min-width: 961px) {
+  .new_category_link {
+    margin-top: -40px;
+    padding-bottom: 10px;
+  }
 }

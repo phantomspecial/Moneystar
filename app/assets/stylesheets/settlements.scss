@@ -11,3 +11,27 @@
 .table-box {
   padding-top: 1px;
 }
+
+
+@media screen and(max-width: 479px) {
+  .settlement_table {
+    zoom: 50%;
+  }
+
+  .trial-top-box {
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .nav-tabs {
+    display: table;
+    table-layout: fixed;
+    text-align: center;
+    width: 100%;
+    zoom: 50%;
+  }
+  .nav-tabs li {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}

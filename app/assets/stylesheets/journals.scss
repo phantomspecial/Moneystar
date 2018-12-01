@@ -15,20 +15,6 @@
   width: 120px !important;
 }
 
-.one_touch_btns,
-.form_kogaki {
-  width: 660px;
-}
-
-.dr_field,
-.cr_field {
-  display: inline-block;
-}
-
-.cr_field {
-  padding-left: 20px;
-}
-
 .form_label {
   font-size: 18px;
 }
@@ -62,48 +48,114 @@
   margin: 5px 10px;
 }
 
-.wrapper {
-  white-space: nowrap;
-  margin-right: 20px;
-}
 
 ///////////////////////////
 //         index         //
 ///////////////////////////
 
 :root{
-  --date_id_amount_col_width: 13%;
-  --category_col_width: 26%;
-  --ledger_num_col_width: 9%;
+  --pc_date_id_amount_col_width: 13%;
+  --pc_category_col_width: 26%;
+  --pc_ledger_num_col_width: 9%;
+
+  --sp_date_id_amount_col_width: 18%;
+  --sp_category_col_width: 18%;
+  --sp_ledger_num_col_width: 11%;
 }
 
-#journal_book_header {
-  width: calc(100% - 15px);
-  margin-bottom: -16px;
-  .date_id_col,
-  .amount_col {
-    width: var(--date_id_amount_col_width);
+// SP
+@media screen and(max-width: 479px) {
+  #input_field {
+    .form-group {
+      width: 90%;
+      padding-left: 10px;
+      .form_kogaki {
+        width: 90%;
+      }
+    }
   }
-  .category_col {
-    width: var(--category_col_width);
+  #journal_book_header, #journal_book {
+    zoom: 70%;
+    //z-index: 0;
   }
-  .ledger_num_col {
-    width: var(--ledger_num_col_width);
+
+  #journal_book_header {
+    margin-bottom: -25px;
+    .date_id_col,
+    .amount_col {
+      width: var(--sp_date_id_amount_col_width);
+    }
+    .category_col {
+      width: var(--sp_category_col_width);
+    }
+    .ledger_num_col {
+      width: var(--sp_ledger_num_col_width);
+    }
+  }
+
+  #journal_book {
+    height: 65vh;
+    width: 100%;
+    //overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    .date_id_col,
+    .amount_col {
+      width: var(--pc_date_id_amount_col_width);
+    }
+    .category_col {
+      width: var(--pc_category_col_width);
+    }
+    .ledger_num_col {
+      width: var(--pc_ledger_num_col_width);
+    }
   }
 }
 
-#journal_book {
-  width: 100%;
-  height: calc(100vh - 150px) ;
-  overflow-y: scroll;
-  .date_id_col,
-  .amount_col {
-    width: var(--date_id_amount_col_width);
+// PC
+@media screen and(min-width: 961px) {
+  .wrapper {
+    white-space: nowrap;
+    margin-right: 20px;
   }
-  .category_col {
-    width: var(--category_col_width);
+  #input_field {
+    .dr_field, .cr_field {
+      display: inline-block;
+    }
+    .cr_field {
+      padding-left: 20px;
+    }
+    .one_touch_btns, .form_kogaki {
+      width: 660px;
+    }
   }
-  .ledger_num_col {
-    width: var(--ledger_num_col_width);
+  #journal_book_header {
+    width: calc(100% - 15px);
+    margin-bottom: -16px;
+    .date_id_col,
+    .amount_col {
+      width: var(--pc_date_id_amount_col_width);
+    }
+    .category_col {
+      width: var(--pc_category_col_width);
+    }
+    .ledger_num_col {
+      width: var(--pc_ledger_num_col_width);
+    }
+  }
+
+  #journal_book {
+    height: calc(100vh - 150px) ;
+    width: 100%;
+    overflow-y: scroll;
+    .date_id_col,
+    .amount_col {
+      width: var(--pc_date_id_amount_col_width);
+    }
+    .category_col {
+      width: var(--pc_category_col_width);
+    }
+    .ledger_num_col {
+      width: var(--pc_ledger_num_col_width);
+    }
   }
 }
