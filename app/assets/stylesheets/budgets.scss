@@ -1,14 +1,13 @@
 // SP
 @media screen and(max-width: 479px) {
-  #monthly_finance {
+  #budgets{
+    zoom: 50%;
   }
 }
 
 // PC
 @media screen and(min-width: 961px) {
-  #monthly_finance {
-    .graph_field {
-      width: 95%;
-    }
+  #budgets{
+
   }
 }

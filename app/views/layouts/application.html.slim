@@ -8,6 +8,8 @@ html
     = include_gon
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     = favicon_link_tag('shared/logo.png')
+    meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0" name="viewport"
+    meta http-equiv='content-language' content='ja'
   body
     = render 'shared/header'
     = yield

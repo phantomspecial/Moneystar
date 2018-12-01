@@ -1,5 +1,4 @@
 .csv_include {
-  display: flex;
   .forward_data {
     padding: 0.5em 1em;
     margin: 1em 0 0 0;
@@ -11,11 +10,30 @@
   }
   .journal_data {
     padding: 0.5em 1em;
-    margin: 1em 0 0 10px;
     font-weight: bold;
     border: solid 3px #000000;
     .btn_field {
       padding-top: 70px;
+    }
+  }
+}
+
+// SP
+@media screen and(max-width: 479px) {
+  .csv_include {
+    zoom: 50%;
+    .journal_data {
+      margin-top: 1em;
+    }
+  }
+}
+
+// PC
+@media screen and(min-width: 961px) {
+  .csv_include {
+    display: flex;
+    .journal_data {
+      margin: 1em 0 0 10px;
     }
   }
 }

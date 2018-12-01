@@ -3,12 +3,12 @@
     = render 'shared/left_pane'
   .right
     .wrapper
-      table.table.table-sm.table-bordered
+      table.table.table-sm.table-bordered.bud_per_table
         thead.thead-dark
           tr.text-center
             th = progress_remain_days('month')
       h5 予実損益計算書
-      table.table.table-hover.table-sm.table-bordered
+      table.table.table-hover.table-sm.table-bordered.bud_per_table
         thead.thead-dark
           tr.text-center
             - BudgetPerformance::PROFIT_AND_LOSS_HEADER.each do |h|
@@ -21,7 +21,7 @@
                   = digit_sep(v)
 
       h5 予実収支計算書
-      table.table.table-hover.table-sm.table-bordered
+      table.table.table-sm.table-bordered.bud_per_table
         thead.thead-dark
           tr.text-center
             - BudgetPerformance::INCOME_AND_EXPENDITURE_HEADER.each do |h|
