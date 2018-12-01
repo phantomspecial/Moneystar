@@ -6,6 +6,10 @@ class Category < ApplicationRecord
   has_many :journal_details
   has_one :budget, foreign_key: :uuid
 
+  CORE_BUSINESS_FLG = %w(本業 本業外).freeze
+
+  enum core_business_flg: { 本業: true, 本業外: false }
+
   validates :top_category_id, :sub_category_id, :cf_category_id, :uuid, :name, presence: true
   validates :top_category_id, inclusion: { in: TopCategory.all.pluck(:id),
             message: "は#{TopCategory.all.pluck(:cat_name)}のいずれかである必要性があります。" }

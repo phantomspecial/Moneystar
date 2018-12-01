@@ -14,6 +14,7 @@
             th UUID
             th 科目名
             th CF区分
+            th 業務区分
             th Link
         tbody
           - @categories.each do |category|
@@ -22,4 +23,5 @@
               td = category.uuid
               td = category.name
               td = category.cf_category.cat_name
+              td = category.core_business_flg
               td = link_to '編集', edit_category_path(category.id)

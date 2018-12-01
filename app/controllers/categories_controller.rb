@@ -22,6 +22,7 @@ class CategoriesController < MastersController
   def update
     @category = Category.find(params[:id])
     @category.name = category_params[:name]
+    @category.core_business_flg = category_params[:core_business_flg]
     return render :edit unless @category.valid?
 
     @category.update!(name: category_params[:name])
@@ -31,6 +32,6 @@ class CategoriesController < MastersController
   private
 
   def category_params
-    params.require(:category).permit(:top_category_id, :sub_category_id, :cf_category_id, :uuid, :name)
+    params.require(:category).permit(:top_category_id, :sub_category_id, :cf_category_id, :uuid, :name, :core_business_flg)
   end
 end
