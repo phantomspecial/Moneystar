@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181129080108) do
+ActiveRecord::Schema.define(version: 20181130091447) do
 
   create_table "budgets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "uuid", comment: "UUID"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20181129080108) do
     t.bigint "cf_category_id", null: false
     t.integer "uuid", null: false
     t.string "name", null: false
+    t.boolean "default_division", default: false, null: false
     t.boolean "core_business_flg", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

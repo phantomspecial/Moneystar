@@ -3,11 +3,9 @@ module MastersHelper
     # 現金/ゆうちょ/UFJ/Suica/SBI/VISAカード/未払水道光熱費の残高算出
     date_maker
     result = {}
-    category_data = [[1101, Constants::DEBIT_SIDE], [1104, Constants::DEBIT_SIDE], [1105, Constants::DEBIT_SIDE],
-                     [1108, Constants::DEBIT_SIDE], [1601, Constants::DEBIT_SIDE],
-                     [2106, Constants::CREDIT_SIDE], [2107, Constants::CREDIT_SIDE]]
-    category_data.each do |uuid, division|
-      result[Category.find_by(uuid: uuid).name] = Ledger.category_range_total(uuid, division, @start_date, @end_date)
+    category_data = %w(1101 1104 1105 1108 1601 2106 2107)
+    category_data.each do |uuid|
+      result[Category.find_by(uuid: uuid).name] = Ledger.category_range_total(uuid, @start_date, @end_date)
     end
     result
   end
@@ -21,7 +19,7 @@ module MastersHelper
     result['先月末差'] = Category.last_month_diff(@start_date, @end_date)
     result['現預金合計'] = Category.total_cash(@start_date, @end_date)
     result['総資金合計'] = Category.super_total_cash(@start_date, @end_date)
-    result['負債合計'] = Category.top_category_range_total(2, Constants::CREDIT_SIDE, @start_date, @end_date)
+    result['負債合計'] = Category.top_category_range_total(2, @start_date, @end_date)
 
     result
   end
