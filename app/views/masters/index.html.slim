@@ -36,11 +36,11 @@
       table.table.table-hover.table-sm.table-bordered.master_index_table
         thead.thead-dark.text-center
           tr
-            th 当月予算比
+            th colspan=2 当月予算比
             th colspan=5
               = progress_remain_days('month')
           tr
-            th 科目
+            th 増加側/科目
             th 月予算額
             th 進捗予算
             th 実行額
@@ -62,11 +62,11 @@
       table.table.table-hover.table-sm.table-bordered.master_index_table
         thead.thead-dark.text-center
           tr
-            th 15日開始予算比
+            th colspan=2 15日開始予算比
             th colspan=5
               = progress_remain_days('payday')
           tr
-            th 科目
+            th 増加側/科目
             th 月予算額
             th 進捗予算
             th 実行額

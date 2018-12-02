@@ -29,7 +29,8 @@ module MastersHelper
   def budget_hash(flg)
     result = {}
     Budget.all.pluck(:uuid).each do |uuid|
-      result[Category.find_by(uuid: uuid).name] = Budget.new.progress_estimate(uuid, flg)
+      name = budget_division_name(uuid) + Category.find_by(uuid: uuid).name
+      result[name] = Budget.new.progress_estimate(uuid, flg)
     end
 
     # 主要変動費合計
@@ -69,6 +70,12 @@ module MastersHelper
     remain_days = (end_date.to_date - Time.current.to_date).to_i + 1
 
     "経過日数：#{progress_days}日　　/　　残り日数：#{remain_days}日"
+  end
+
+  def budget_division_name(uuid)
+    budget = Budget.find_by(uuid: uuid)
+    return if budget.nil?
+    budget.budget_division == '借方残高増加予算' ? '(借方)' : '(貸方)'
   end
 
   private

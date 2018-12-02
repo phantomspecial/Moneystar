@@ -37,7 +37,14 @@ class Budget < ApplicationRecord
 
     current_value = current_value(uuid, start_date, end_date)
 
-    return { monthly_estimate_amt: 0, progress_estimate_amt: 0, current_value: current_value, estimate_ratio: 0, devide: 0 } if budget.nil?
+    if budget.nil?
+      return { monthly_estimate_amt: 0,
+               progress_estimate_amt: 0,
+               current_value: current_value,
+               estimate_ratio: 0,
+               devide: devide(uuid, 0, current_value)
+      }
+    end
 
     case budget.budget_typ
     when '定額予算日額'
@@ -146,10 +153,8 @@ class Budget < ApplicationRecord
   end
 
   def devide(uuid, progress_estimate, current_value)
-    if Category.default_division(uuid) == 1
-      progress_estimate - current_value
-    else
-      current_value - progress_estimate
-    end
+    ddv = (Category.default_division(uuid) == 1 || Category.default_division(uuid) == 5)? true : false
+    bd = Budget.find_by(uuid: uuid)&.budget_division == '借方残高増加予算' ? true : false
+    (bd || ddv) ? progress_estimate - current_value : current_value - progress_estimate
   end
 end
